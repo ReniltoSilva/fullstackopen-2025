@@ -11,16 +11,23 @@ const Button = (props) => {
   );
 };
 
-const Statistics = ({ good, neutral, bad, positive, average }) => {
+const Statistics = ({ good, neutral, bad, all, average, positive }) => {
+  if (!all) {
+    return (
+      <>
+        <p>No feedback given</p>
+      </>
+    );
+  }
   return (
     <>
       <h2>Statistics</h2>
       <p>Good: {good}</p>
       <p>Neutral: {neutral}</p>
       <p>Bad: {bad}</p>
-      <p>All: {good + neutral + bad}</p>
-      <p>Average: {average || 0}</p>
-      <p>Positive: {positive || 0}%</p>
+      <p>All: {all}</p>
+      <p>Average: {average}</p>
+      <p>Positive: {positive}%</p>
     </>
   );
 };
@@ -54,13 +61,15 @@ const App = () => {
     setCount(count.concat(badScore));
   };
 
-  const average = count.length
-    ? count.reduce((a, b) => a + b, 0) / count.length
-    : 0;
+  const statistics = {
+    good,
+    neutral,
+    bad,
+    all: good + neutral + bad,
+    average: count.length ? count.reduce((a, b) => a + b, 0) / count.length : 0,
+    positive: (good / (good + neutral + bad)) * 100 || 0,
+  };
 
-  const positive = (good / (good + neutral + bad)) * 100;
-
-  console.log(count);
   return (
     <>
       <h1>Give Feedback</h1>
@@ -68,19 +77,14 @@ const App = () => {
       <Button onClick={handleNeutral} text="Neutral" />
       <Button onClick={handleBad} text="Bad" />
       <Statistics
-        good={good}
-        neutral={neutral}
-        bad={bad}
-        positive={positive}
-        average={average}
+        // good={good}
+        // neutral={neutral}
+        // bad={bad}
+        // all={statistics.all}
+        // average={statistics.average}
+        // positive={statistics.positive}
+        {...statistics}
       />
-      {/* <h2>Statistics</h2>
-      <p>Good: {good}</p>
-      <p>Neutral: {neutral}</p>
-      <p>Bad: {bad}</p>
-      <p>All: {good + neutral + bad}</p>
-      <p>Average: {handleAverage() || 0}</p>
-      <p>Positive: {(good / (good + neutral + bad)) * 100 || 0}%</p> */}
     </>
   );
 };
