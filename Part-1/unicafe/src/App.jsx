@@ -1,13 +1,24 @@
 import { useState } from "react";
 
-const Button = (props) => {
+const Button = ({ onClick, text }) => {
   return (
     <button
-      onClick={props.onClick}
+      onClick={onClick}
       style={{ borderRadius: "5px", border: "1px solid black", margin: "5px" }}
     >
-      {props.text}
+      {text}
     </button>
+  );
+};
+
+const StatisticLine = ({ text, value }) => {
+  // console.log(text, value);
+  return (
+    <>
+      <p>
+        {text} {value}
+      </p>
+    </>
   );
 };
 
@@ -22,12 +33,12 @@ const Statistics = ({ good, neutral, bad, all, average, positive }) => {
   return (
     <>
       <h2>Statistics</h2>
-      <p>Good: {good}</p>
-      <p>Neutral: {neutral}</p>
-      <p>Bad: {bad}</p>
-      <p>All: {all}</p>
-      <p>Average: {average}</p>
-      <p>Positive: {positive}%</p>
+      <StatisticLine value={good} text="Good" />
+      <StatisticLine value={neutral} text="neutral" />
+      <StatisticLine value={bad} text="bad" />
+      <StatisticLine value={all} text="all" />
+      <StatisticLine value={average} text="average" />
+      <StatisticLine value={positive} text="positive" />
     </>
   );
 };
@@ -39,26 +50,18 @@ const App = () => {
   const [count, setCount] = useState([]);
 
   const handleGood = () => {
-    const goodScore = 1;
-    const goodUpdated = good + 1;
-    setGood(goodUpdated);
-    setCount(count.concat(goodScore));
+    setGood(good + 1);
+    setCount(count.concat(1));
   };
 
   const handleNeutral = () => {
-    const neutralScore = 0;
-    const updatedNeutral = neutral + 1;
-    setNeutral(updatedNeutral);
-    setCount(neutralScore);
-    setCount(count.concat(neutralScore));
+    setNeutral(neutral + 1);
+    setCount(count.concat(0));
   };
 
   const handleBad = () => {
-    const badScore = -1;
-    const updatedBad = bad + 1;
-    setBad(updatedBad);
-    setCount(badScore);
-    setCount(count.concat(badScore));
+    setBad(bad + 1);
+    setCount(count.concat(-1));
   };
 
   const statistics = {
@@ -76,15 +79,7 @@ const App = () => {
       <Button onClick={handleGood} text="Good" />
       <Button onClick={handleNeutral} text="Neutral" />
       <Button onClick={handleBad} text="Bad" />
-      <Statistics
-        // good={good}
-        // neutral={neutral}
-        // bad={bad}
-        // all={statistics.all}
-        // average={statistics.average}
-        // positive={statistics.positive}
-        {...statistics}
-      />
+      <Statistics {...statistics} />
     </>
   );
 };
