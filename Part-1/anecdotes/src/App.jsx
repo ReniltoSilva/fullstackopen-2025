@@ -1,5 +1,16 @@
 import { useState } from "react";
 
+const MostVoted = ({ anecdote, votes }) => {
+  if (votes)
+    return (
+      <>
+        <h2>Anecdote with most votes</h2>
+        <p>{anecdote}</p>
+        <p>Has {votes} votes</p>
+      </>
+    );
+};
+
 const App = () => {
   const anecdotes = [
     "If it hurts, do it more often.",
@@ -15,23 +26,26 @@ const App = () => {
   const [selected, setSelected] = useState(0);
   const [vote, setVote] = useState([0, 0, 0, 0, 0, 0, 0, 0]);
 
-  const generateNumber = () => {
+  const randomNumber = () => {
     setSelected((Math.random() * 7).toFixed(0));
   };
 
-  const voteFunc = () => {
+  const voteAnecdote = () => {
     const copyVote = [...vote];
     copyVote[selected] = copyVote[selected] + 1;
     setVote(copyVote);
-    console.log(copyVote);
   };
+
+  const countVote = vote.reduce((a, b) => (a > b ? a : b), 0);
+  const mapVotes = vote.findIndex((item) => item === countVote);
 
   return (
     <div>
+      <h1>Anecdote of the day</h1>
       <p>{anecdotes[selected]}</p>
       <p>Has {vote[selected]} votes</p>
       <button
-        onClick={voteFunc}
+        onClick={voteAnecdote}
         style={{
           border: "solid 1px darkGrey",
           borderRadius: "5px",
@@ -43,7 +57,7 @@ const App = () => {
         Vote
       </button>
       <button
-        onClick={generateNumber}
+        onClick={randomNumber}
         style={{
           border: "solid 1px darkGrey",
           borderRadius: "5px",
@@ -54,6 +68,10 @@ const App = () => {
       >
         Next Anecdote
       </button>
+      {/* <h2>Anecdote with most votes</h2>
+      <p>{anecdotes[mapVotes]}</p>
+      <p>Has {countVote} votes</p> */}
+      <MostVoted anecdote={anecdotes[mapVotes]} votes={countVote} />
     </div>
   );
 };
