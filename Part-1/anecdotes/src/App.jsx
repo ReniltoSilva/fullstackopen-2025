@@ -13,21 +13,46 @@ const App = () => {
   ];
 
   const [selected, setSelected] = useState(0);
+  const [vote, setVote] = useState([0, 0, 0, 0, 0, 0, 0, 0]);
 
-  const generateNumber = () => setSelected((Math.random() * 7).toFixed(0));
+  const generateNumber = () => {
+    setSelected((Math.random() * 7).toFixed(0));
+  };
+
+  const voteFunc = () => {
+    const copyVote = [...vote];
+    copyVote[selected] = copyVote[selected] + 1;
+    setVote(copyVote);
+    console.log(copyVote);
+  };
 
   return (
     <div>
       <p>{anecdotes[selected]}</p>
+      <p>Has {vote[selected]} votes</p>
+      <button
+        onClick={voteFunc}
+        style={{
+          border: "solid 1px darkGrey",
+          borderRadius: "5px",
+          padding: "5px",
+          margin: "2px",
+          cursor: "pointer",
+        }}
+      >
+        Vote
+      </button>
       <button
         onClick={generateNumber}
         style={{
           border: "solid 1px darkGrey",
           borderRadius: "5px",
           padding: "5px",
+          margin: "2px",
+          cursor: "pointer",
         }}
       >
-        Generate
+        Next Anecdote
       </button>
     </div>
   );
