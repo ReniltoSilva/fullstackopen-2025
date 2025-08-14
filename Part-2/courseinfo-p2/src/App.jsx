@@ -18,6 +18,11 @@ const App = () => {
         exercises: 14,
         id: 3,
       },
+      {
+        name: "Redux",
+        exercises: 11,
+        id: 4,
+      },
     ],
   };
   return <Course course={course} />;
@@ -37,18 +42,20 @@ const Header = ({ header }) => {
 };
 
 const Content = ({ parts }) => {
-  console.log(parts);
+  // console.log(parts);
+  const total = parts.map((item) => item.exercises).reduce((a, b) => a + b);
+
   return (
     <>
       {parts.map((item) => (
         <Part name={item.name} exercises={item.exercises} key={item.id} />
       ))}
+      {<Total total={total} />}
     </>
   );
 };
 
 const Part = (props) => {
-  console.log(props);
   return (
     <p>
       {props.name} {props.exercises}
@@ -56,6 +63,12 @@ const Part = (props) => {
   );
 };
 
-// const Total = (props) => <p>Number of exercises {props.total}</p>;
+const Total = ({ total }) => {
+  return (
+    <p>
+      <b>Total of {total} exercises</b>
+    </p>
+  );
+};
 
 export default App;
