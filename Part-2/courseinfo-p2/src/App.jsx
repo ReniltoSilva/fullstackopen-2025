@@ -43,6 +43,7 @@ const Header = ({ header }) => {
 
 const Content = ({ parts }) => {
   // console.log(parts);
+  //Reduce already calculated
   const total = parts.map((item) => item.exercises).reduce((a, b) => a + b);
 
   return (
