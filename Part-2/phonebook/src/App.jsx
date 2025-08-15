@@ -26,6 +26,7 @@ const App = () => {
       const newPerson = {
         name: newName,
         number: newNumber,
+        id: persons[persons.length - 1].id + 1,
       };
 
       setPersons(persons.concat(newPerson));
@@ -35,14 +36,13 @@ const App = () => {
   };
 
   const filterPerson = (e) => {
-    console.log(e.target.value == "");
+    // console.log(e.target.value == "");
     if (!e.target.value == "") {
       const filteredPerson = persons.filter(
         (item) =>
           e.target.value.toLowerCase() ===
           item.name.substring(0, e.target.value.length).toLowerCase()
       );
-      console.log(filteredPerson);
       setFilter(filteredPerson);
     } else {
       setFilter([]);
@@ -52,39 +52,72 @@ const App = () => {
   return (
     <div>
       <h2>Phonebook</h2>
-      <div>
-        <p>Filter shown with</p>
-        <input type="text" onChange={filterPerson} />
-      </div>
+      <Filter text={"text"} filterPerson={filterPerson} />
+
+      <h3>Add a new person</h3>
+      <PersonForm
+        newName={newName}
+        newNumber={newNumber}
+        setNewName={(e) => setNewName(e.target.value)}
+        setNewNumber={(e) => setNewNumber(e.target.value)}
+        submit={"submit"}
+        addPerson={addPerson}
+      />
+
+      <h3>Numbers</h3>
+      {filterName.length == 0
+        ? persons.map((item) => (
+            <Persons key={item.id} name={item.name} number={item.number} />
+          ))
+        : filterName.map((item) => (
+            <Persons key={item.id} name={item.name} number={item.number} />
+          ))}
+    </div>
+  );
+};
+
+const Filter = ({ text, filterPerson }) => {
+  // console.log({ text, filterPerson });
+  return (
+    <>
+      <p>Filter shown with</p>
+      <input type={text} onChange={filterPerson} />
+    </>
+  );
+};
+
+const PersonForm = ({
+  newName,
+  setNewName,
+  newNumber,
+  setNewNumber,
+  submit,
+  addPerson,
+}) => {
+  return (
+    <>
       <form>
-        <h2>Add a new</h2>
         <div>
-          Name:{" "}
-          <input value={newName} onChange={(e) => setNewName(e.target.value)} />
+          Name: <input value={newName} onChange={setNewName} />
         </div>
         <div>
-          Number:{" "}
-          <input
-            value={newNumber}
-            onChange={(e) => setNewNumber(e.target.value)}
-          />
+          Number: <input value={newNumber} onChange={setNewNumber} />
         </div>
         <div>
-          <button type="submit" onClick={addPerson}>
+          <button type={submit} onClick={addPerson}>
             add
           </button>
         </div>
       </form>
-      <h2>Numbers</h2>
-      {/* {persons.map((item) => (
-        <p>
-          {item.name} {item.number}
-        </p>
-      ))} */}
-      {filterName.map((item) => (
-        <p>{item.name}</p>
-      ))}
-    </div>
+    </>
+  );
+};
+
+const Persons = ({ name, number }) => {
+  return (
+    <p>
+      {name} {number}
+    </p>
   );
 };
 
