@@ -20,7 +20,6 @@ const App = (props) => {
   };
 
   const handleNoteChange = (e) => {
-    console.log(e.target.value);
     setNewNote(e.target.value);
   };
 

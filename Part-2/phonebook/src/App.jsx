@@ -37,7 +37,7 @@ const App = () => {
 
   const filterPerson = (e) => {
     // console.log(e.target.value == "");
-    if (!e.target.value == "") {
+    if (e.target.value !== "") {
       const filteredPerson = persons.filter(
         (item) =>
           e.target.value.toLowerCase() ===
@@ -65,7 +65,7 @@ const App = () => {
       />
 
       <h3>Numbers</h3>
-      {filterName.length == 0
+      {filterName.length === 0
         ? persons.map((item) => (
             <Persons key={item.id} name={item.name} number={item.number} />
           ))
