@@ -21,10 +21,33 @@ const App = () => {
     const checkName = persons.some(
       (item) => item.name.toLowerCase() === newName.toLowerCase()
     );
+
     if (checkName) {
-      alert(`${newName} is already added to the phonebook`);
-      setNewName("");
-      setNewNumber("");
+      const confirmed = window.confirm(
+        `${newName} is already added to the phonebook, 
+          replace the old number with a new one?`
+      );
+
+      if (confirmed) {
+        const personName = persons.find((item) => item.name === newName);
+        const updateNumber = { ...personName, number: newNumber };
+        console.log(updateNumber);
+        console.log(personName.id);
+        personsServices
+          .updatePerson(personName.id, updateNumber)
+          .then((response) => {
+            setPersons(
+              persons.map((item) => (item.id === response.id ? response : item))
+            );
+            setNewName("");
+            setNewNumber("");
+          })
+          .catch((error) => {
+            console.log(error);
+            setPersons(persons.filter((p) => p.id !== personName.id));
+            alert(`${personName} was already deleted from server`);
+          });
+      }
     } else {
       const newPerson = {
         name: newName,

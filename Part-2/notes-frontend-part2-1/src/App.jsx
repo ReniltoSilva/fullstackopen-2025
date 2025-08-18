@@ -40,7 +40,6 @@ const App = () => {
     // const url = `http://localhost:3001/notes/${id}`; //This is one single note, not the entire lilst of notes
     const note = notes.find((n) => n.id === id);
     const changedNote = { ...note, important: !note.important };
-    console.log(changedNote);
     noteServices
       .update(id, changedNote)
       .then((returnedNotes) => {
