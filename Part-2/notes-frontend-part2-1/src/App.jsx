@@ -40,11 +40,12 @@ const App = () => {
     // const url = `http://localhost:3001/notes/${id}`; //This is one single note, not the entire lilst of notes
     const note = notes.find((n) => n.id === id);
     const changedNote = { ...note, important: !note.important };
-
+    console.log(changedNote);
     noteServices
       .update(id, changedNote)
       .then((returnedNotes) => {
         setNotes(notes.map((note) => (note.id === id ? returnedNotes : note)));
+        console.log(returnedNotes);
       })
       .catch((error) => {
         alert(`The note ${note.content} was already deleted from server`);

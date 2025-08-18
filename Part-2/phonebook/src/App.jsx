@@ -46,6 +46,30 @@ const App = () => {
     }
   };
 
+  const delPerson = (id, name) => {
+    if (window.confirm(`Delete ${name} ?`)) {
+      personsServices
+        .deletePerson(id)
+        .then((response) => {
+          console.log(response);
+          console.log(response.data);
+          console.log(response.data.name);
+          // console.log(`${response.data.name} was deleted`);
+          setPersons(persons.filter((p) => p.id !== id));
+        })
+        .catch((error) => {
+          console.log(error);
+          alert(`${name} was already deleted from server`);
+          setPersons(persons.filter((p) => p.id !== id));
+        });
+    }
+
+    // axios
+    //   .delete(`http://localhost:3001/persons/${id}`)
+    //   .then((response) => console.log(response.data));
+    // console.log(`${name} delete`);
+  };
+
   const filterPerson = (e) => {
     // console.log(e.target.value == "");
     if (e.target.value !== "") {
@@ -78,10 +102,20 @@ const App = () => {
       <h3>Numbers</h3>
       {filterName.length === 0
         ? persons.map((item) => (
-            <Persons key={item.id} name={item.name} number={item.number} />
+            <Persons
+              key={item.id}
+              name={item.name}
+              number={item.number}
+              deletePerson={() => delPerson(item.id, item.name)}
+            />
           ))
         : filterName.map((item) => (
-            <Persons key={item.id} name={item.name} number={item.number} />
+            <Persons
+              key={item.id}
+              name={item.name}
+              number={item.number}
+              deletePerson={() => delPerson(item.id, item.name)}
+            />
           ))}
     </div>
   );
@@ -124,11 +158,14 @@ const PersonForm = ({
   );
 };
 
-const Persons = ({ name, number }) => {
+const Persons = ({ name, number, deletePerson }) => {
   return (
-    <p>
-      {name} {number}
-    </p>
+    <>
+      <p>
+        {name} {number}
+      </p>
+      <button onClick={deletePerson}>delete</button>
+    </>
   );
 };
 
