@@ -1,5 +1,9 @@
 import { useState, useEffect } from "react";
 import personsServices from "./services/persons";
+import Persons from "./components/Persons";
+import PersonForm from "./components/PersonForm";
+import Filter from "./components/Filter";
+import Notification from "./components/Notification";
 import axios from "axios";
 
 const App = () => {
@@ -7,6 +11,9 @@ const App = () => {
   const [newName, setNewName] = useState("");
   const [newNumber, setNewNumber] = useState("");
   const [filterName, setFilter] = useState([]);
+  const [errorMessage, setErrorMessage] = useState(null);
+  const [successMessage, setSuccessMessage] = useState(null);
+
   useEffect(() => {
     // axios.get("http://localhost:3001/persons").then((response) => {
     //   setPersons(response.data);
@@ -16,12 +23,14 @@ const App = () => {
     });
   }, []);
 
+  //ADD PERSON
   const addPerson = (e) => {
     e.preventDefault();
     const checkName = persons.some(
       (item) => item.name.toLowerCase() === newName.toLowerCase()
     );
 
+    //Confirm if user wants to update person's number
     if (checkName) {
       const confirmed = window.confirm(
         `${newName} is already added to the phonebook, 
@@ -31,8 +40,6 @@ const App = () => {
       if (confirmed) {
         const personName = persons.find((item) => item.name === newName);
         const updateNumber = { ...personName, number: newNumber };
-        console.log(updateNumber);
-        console.log(personName.id);
         personsServices
           .updatePerson(personName.id, updateNumber)
           .then((response) => {
@@ -41,11 +48,19 @@ const App = () => {
             );
             setNewName("");
             setNewNumber("");
+            setSuccessMessage(
+              `${response.name}'s number updated successfully!`
+            );
+            setTimeout(() => {
+              setSuccessMessage(null);
+            }, 4000);
           })
           .catch((error) => {
-            console.log(error);
+            setErrorMessage(`An error has occurred, please try again!`);
+            setTimeout(() => {
+              setErrorMessage(null);
+            }, 4000);
             setPersons(persons.filter((p) => p.id !== personName.id));
-            alert(`${personName} was already deleted from server`);
           });
       }
     } else {
@@ -57,6 +72,12 @@ const App = () => {
 
       personsServices.createPerson(newPerson).then((response) => {
         setPersons(persons.concat(response));
+
+        setSuccessMessage(`${newName} was added successfully`);
+
+        setTimeout(() => {
+          setSuccessMessage(null);
+        }, 4000);
       });
 
       // axios
@@ -69,20 +90,26 @@ const App = () => {
     }
   };
 
+  //DELETE PERSON
   const delPerson = (id, name) => {
     if (window.confirm(`Delete ${name} ?`)) {
       personsServices
         .deletePerson(id)
         .then((response) => {
-          console.log(response);
-          console.log(response.data);
-          console.log(response.data.name);
-          // console.log(`${response.data.name} was deleted`);
-          setPersons(persons.filter((p) => p.id !== id));
+          setPersons(persons.filter((p) => p.id !== response.data.id));
+          setErrorMessage(
+            `${response.data.name} was successfully deleted from the server!`
+          );
+          setTimeout(() => {
+            setErrorMessage(null);
+          }, 4000);
         })
         .catch((error) => {
-          console.log(error);
-          alert(`${name} was already deleted from server`);
+          setErrorMessage(`${name} has already been deleted from server`);
+          setTimeout(() => {
+            setErrorMessage(null);
+          }, 4000);
+
           setPersons(persons.filter((p) => p.id !== id));
         });
     }
@@ -110,6 +137,8 @@ const App = () => {
   return (
     <div>
       <h2>Phonebook</h2>
+      <Notification message={errorMessage} text={"error"} />
+      <Notification message={successMessage} text={"success"} />
       <Filter text={"text"} filterPerson={filterPerson} />
 
       <h3>Add a new person</h3>
@@ -141,54 +170,6 @@ const App = () => {
             />
           ))}
     </div>
-  );
-};
-
-const Filter = ({ text, filterPerson }) => {
-  // console.log({ text, filterPerson });
-  return (
-    <>
-      <p>Filter shown with</p>
-      <input type={text} onChange={filterPerson} />
-    </>
-  );
-};
-
-const PersonForm = ({
-  newName,
-  setNewName,
-  newNumber,
-  setNewNumber,
-  submit,
-  addPerson,
-}) => {
-  return (
-    <>
-      <form>
-        <div>
-          Name: <input value={newName} onChange={setNewName} />
-        </div>
-        <div>
-          Number: <input value={newNumber} onChange={setNewNumber} />
-        </div>
-        <div>
-          <button type={submit} onClick={addPerson}>
-            add
-          </button>
-        </div>
-      </form>
-    </>
-  );
-};
-
-const Persons = ({ name, number, deletePerson }) => {
-  return (
-    <>
-      <p>
-        {name} {number}
-      </p>
-      <button onClick={deletePerson}>delete</button>
-    </>
   );
 };
 
