@@ -1,5 +1,5 @@
 import axios from "axios";
-const baseUrl = "http://localhost:3000/notes"; //change again to 3001
+const baseUrl = "http://localhost:3001/notes";
 
 // const getAll = () => {
 //   return axios.get(baseURL);
