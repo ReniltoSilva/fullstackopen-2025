@@ -6,6 +6,7 @@ function App() {
   const [entry, setEntry] = useState("");
   const [country, setCountry] = useState([]);
   const [newCountry, setNewCountry] = useState([]);
+  const [selectedCountry, setSelectedCountry] = useState(null);
 
   useEffect(() => {
     axios
@@ -28,26 +29,40 @@ function App() {
 
       setNewCountry(sortCountries);
     } else setNewCountry([]);
+
+    setSelectedCountry(null);
   };
 
   return (
     <>
       <p>Search Countries</p>
       <input onChange={handleEntry} />
-      <Display parts={newCountry} />
-      {/* {newCountry.length === 1 ? <Info details={newCountry.map((item) => item)} /> : } */}
+      <Display parts={newCountry} onSelected={setSelectedCountry} />
+      {selectedCountry && (
+        <Info
+          name={selectedCountry.name.common}
+          capital={selectedCountry.capital?.[0]}
+          area={selectedCountry.area}
+          language={Object.values(selectedCountry.languages || {})}
+          flag={selectedCountry.flags.svg}
+        />
+      )}
     </>
   );
 }
 
-const Display = ({ parts }) => {
+const Display = ({ parts, onSelected }) => {
   if (parts.length > 10) {
     return <Part name={"Too many matches, specify another filter!"} />;
   } else if (parts.length > 1 && parts.length <= 10) {
     return (
       <>
         {parts.map((item) => (
-          <Part name={item.name.common} />
+          <Part
+            name={item.name.common}
+            details={item}
+            onSelected={onSelected}
+          />
         ))}
       </>
     );
@@ -69,8 +84,15 @@ const Display = ({ parts }) => {
   }
 };
 
-const Part = ({ name }) => {
-  return <p>{name}</p>;
+const Part = ({ name, onSelected, details }) => {
+  return (
+    <p>
+      {name}{" "}
+      {name.includes("Too many") ? null : (
+        <button onClick={() => onSelected(details)}>Show</button>
+      )}
+    </p>
+  );
 };
 
 const Info = ({ name, capital, area, language, flag }) => {
