@@ -1,6 +1,8 @@
 import { useState, useEffect } from "react";
-// import "./App.css";
-import axios from "axios";
+import Weather from "./components/Weather";
+import Display from "./components/Display";
+import Info from "./components/Info";
+import countryServices from "./services/countries";
 
 function App() {
   const [entry, setEntry] = useState("");
@@ -8,13 +10,12 @@ function App() {
   const [newCountry, setNewCountry] = useState([]);
   const [selectedCountry, setSelectedCountry] = useState(null);
 
+  //Fetch Country API
   useEffect(() => {
-    axios
-      .get("https://studies.cs.helsinki.fi/restcountries/api/all")
-      .then((response) => {
-        setCountry(response.data);
-        console.log(response.data);
-      });
+    countryServices.getAllCountries().then((response) => {
+      console.log(response);
+      setCountry(response);
+    });
   }, []);
 
   //Save value to "entry" and use it to filter "country"
@@ -26,19 +27,19 @@ function App() {
       const sortCountries = country.filter((item) =>
         item.name.common.toLowerCase().includes(value.toLowerCase())
       );
-
       setNewCountry(sortCountries);
     } else setNewCountry([]);
-
     setSelectedCountry(null);
   };
 
   return (
     <>
-      <p>Search Countries</p>
+      <h3>Search Countries</h3>
       <input onChange={handleEntry} />
+
       <Display parts={newCountry} onSelected={setSelectedCountry} />
-      {selectedCountry && (
+
+      {selectedCountry ? (
         <Info
           name={selectedCountry.name.common}
           capital={selectedCountry.capital?.[0]}
@@ -46,73 +47,13 @@ function App() {
           language={Object.values(selectedCountry.languages || {})}
           flag={selectedCountry.flags.svg}
         />
-      )}
+      ) : null}
+
+      {newCountry.length === 1 ? (
+        <Weather name={newCountry.map((item) => item.name.common).join()} />
+      ) : null}
     </>
   );
 }
-
-const Display = ({ parts, onSelected }) => {
-  if (parts.length > 10) {
-    return <Part name={"Too many matches, specify another filter!"} />;
-  } else if (parts.length > 1 && parts.length <= 10) {
-    return (
-      <>
-        {parts.map((item) => (
-          <Part
-            name={item.name.common}
-            details={item}
-            onSelected={onSelected}
-          />
-        ))}
-      </>
-    );
-  } else if (parts.length === 1) {
-    // return <Info name={parts.name} />;
-    return (
-      <>
-        {parts.map((item) => (
-          <Info
-            name={item.name.common}
-            capital={item.capital[0]}
-            area={item.area}
-            language={Object.values(item.languages)}
-            flag={item.flags.svg}
-          />
-        ))}
-      </>
-    );
-  }
-};
-
-const Part = ({ name, onSelected, details }) => {
-  return (
-    <p>
-      {name}{" "}
-      {name.includes("Too many") ? null : (
-        <button onClick={() => onSelected(details)}>Show</button>
-      )}
-    </p>
-  );
-};
-
-const Info = ({ name, capital, area, language, flag }) => {
-  console.log(name, capital, area, language, flag);
-  return (
-    <>
-      <h2>{name}</h2>
-      <p>Capital: {capital}</p>
-      <p>Area: {area}</p>
-      <h2>Languages</h2>
-      <>
-        {language.map((item) => (
-          <ul>
-            <li>{item}</li>
-          </ul>
-        ))}
-      </>
-      <img src={flag} alt={`The flag of ${name}`} width="270px" />
-    </>
-  );
-};
 
 export default App;
