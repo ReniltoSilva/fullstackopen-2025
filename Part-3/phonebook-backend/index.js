@@ -1,7 +1,7 @@
 const express = require("express");
 const app = express();
 
-const persons = [
+let persons = [
   {
     id: "1",
     name: "Arto Hellas",
@@ -24,30 +24,46 @@ const persons = [
   },
 ];
 
-app.get("/info", (request, response) => {
+//Function to find person by id
+const findId = (req) => {
+  const id = req;
+  const person = persons.find((person) => person.id === id);
+
+  return person;
+};
+
+app.get("/info", (req, res) => {
   const entries = persons.length;
   const time = new Date();
 
-  response.send(
+  res.send(
     `<p>Phonebook has info for ${entries} people</p>
     <p>${time}<p/>`
   );
 });
 
 //Get list of items
-app.get("/api/persons/", (request, response) => {
-  response.json(persons);
+app.get("/api/persons/", (req, res) => {
+  res.json(persons);
 });
 
 //Get item by id
-app.get("/api/persons/:id", (request, response) => {
-  const id = request.params.id;
-  const person = persons.find((item) => item.id === id);
+app.get("/api/persons/:id", (req, res) => {
+  const person = findId(req.params.id);
 
   //Check if item is available or not
   if (person) {
-    response.json(person);
-  } else response.status(404).end();
+    res.json(person);
+  } else res.status(404).end();
+});
+
+//Delete item from persons list
+app.delete("/api/persons/:id", (req, res) => {
+  const id = req.params.id;
+  persons = persons.filter((person) => person.id !== id);
+
+  console.log(res);
+  res.status(204).end();
 });
 
 //Listen for requests on port 3001
