@@ -24,8 +24,6 @@ const persons = [
   },
 ];
 
-// const info = "Phonebook has info for 2 people";
-
 app.get("/info", (request, response) => {
   const entries = persons.length;
   const time = new Date();
@@ -36,16 +34,23 @@ app.get("/info", (request, response) => {
   );
 });
 
+//Get list of items
 app.get("/api/persons/", (request, response) => {
   response.json(persons);
 });
 
+//Get item by id
 app.get("/api/persons/:id", (request, response) => {
   const id = request.params.id;
   const person = persons.find((item) => item.id === id);
-  response.json(person);
+
+  //Check if item is available or not
+  if (person) {
+    response.json(person);
+  } else response.status(404).end();
 });
 
+//Listen for requests on port 3001
 const PORT = 3001;
 app.listen(PORT, () => {
   console.log(`Server runnin on port ${PORT}`);
