@@ -1,6 +1,8 @@
 const express = require("express");
 const app = express();
 
+app.use(express.json());
+
 let persons = [
   {
     id: "1",
@@ -64,6 +66,41 @@ app.delete("/api/persons/:id", (req, res) => {
 
   console.log(res);
   res.status(204).end();
+});
+
+// //Function to generate id
+// const generateID = () => {
+//   const maxId =
+//     persons.length > 0 ? Math.max(...persons.map((n) => Number(n.id))) : 0;
+//   return String(maxId + 1);
+// };
+
+//Function to generate id
+const generateID = () => {
+  return persons.length > 0
+    ? Math.max(...persons.map((n) => Number(n.id) * Math.random()))
+    : 0;
+};
+
+//Post new item to persons list
+app.post("/api/persons/", (request, res) => {
+  const body = request.body;
+
+  if (!body.content) {
+    return response.status(400).json({
+      error: "content missing",
+    });
+  }
+
+  const person = {
+    content: body.content,
+    important: body.important || false,
+    id: generateID(),
+  };
+
+  persons = persons.concat(person);
+  res.json(person);
+  console.log(response);
 });
 
 //Listen for requests on port 3001
