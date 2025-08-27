@@ -85,16 +85,25 @@ const generateID = () => {
 //Post new item to persons list
 app.post("/api/persons/", (request, res) => {
   const body = request.body;
+  const checkName = persons.find((item) => item.name === body.name);
 
-  if (!body.content) {
-    return response.status(400).json({
-      error: "content missing",
+  if (!body.name) {
+    return res.status(400).json({
+      error: "Name missing",
+    });
+  } else if (!body.number) {
+    return res.status(400).json({
+      error: "Number missing",
+    });
+  } else if (checkName) {
+    return res.status(400).json({
+      error: "Name already exists, it must be unique!",
     });
   }
 
   const person = {
-    content: body.content,
-    important: body.important || false,
+    name: body.name,
+    number: body.number,
     id: generateID(),
   };
 
