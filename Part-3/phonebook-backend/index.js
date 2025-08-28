@@ -1,7 +1,19 @@
 const express = require("express");
+const morgan = require("morgan");
 const app = express();
 
+//Middleware to log details of the request
+// const requestLogger = (request, response, next) => {
+//   console.log("Method:", request.method);
+//   console.log("Path:  ", request.path);
+//   console.log("Body:  ", request.body);
+//   console.log("---");
+//   next();
+// };
+
 app.use(express.json());
+// app.use(requestLogger);
+app.use(morgan("tiny"));
 
 let persons = [
   {
@@ -26,14 +38,6 @@ let persons = [
   },
 ];
 
-//Function to find person by id
-const findId = (req) => {
-  const id = req;
-  const person = persons.find((person) => person.id === id);
-
-  return person;
-};
-
 app.get("/info", (req, res) => {
   const entries = persons.length;
   const time = new Date();
@@ -48,6 +52,12 @@ app.get("/info", (req, res) => {
 app.get("/api/persons/", (req, res) => {
   res.json(persons);
 });
+
+//Function to find person by id
+const findId = (id) => {
+  const person = persons.find((person) => person.id === id);
+  return person;
+};
 
 //Get item by id
 app.get("/api/persons/:id", (req, res) => {
@@ -67,13 +77,6 @@ app.delete("/api/persons/:id", (req, res) => {
   console.log(res);
   res.status(204).end();
 });
-
-// //Function to generate id
-// const generateID = () => {
-//   const maxId =
-//     persons.length > 0 ? Math.max(...persons.map((n) => Number(n.id))) : 0;
-//   return String(maxId + 1);
-// };
 
 //Function to generate id
 const generateID = () => {
@@ -108,9 +111,15 @@ app.post("/api/persons/", (request, res) => {
   };
 
   persons = persons.concat(person);
-  res.json(person);
-  console.log(response);
+  res.status(201).json(person);
 });
+
+//Middleware to check for unknown endpoints
+// const unknownEndpoint = (request, response) => {
+//   response.status(404).send({ error: "unknown endpoint" });
+// };
+
+// app.use(unknownEndpoint);
 
 //Listen for requests on port 3001
 const PORT = 3001;
