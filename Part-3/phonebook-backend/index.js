@@ -11,9 +11,16 @@ const app = express();
 //   next();
 // };
 
+morgan.token("info", function (req, res) {
+  return JSON.stringify(req.body);
+});
+
 app.use(express.json());
+app.use(
+  morgan(":method :url :status :res[content-length] :response-time ms :info")
+);
+
 // app.use(requestLogger);
-app.use(morgan("tiny"));
 
 let persons = [
   {
