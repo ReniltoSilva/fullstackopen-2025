@@ -2,6 +2,8 @@ const express = require("express");
 const morgan = require("morgan");
 const cors = require("cors");
 const app = express();
+
+app.use(express.static("dist"));
 app.use(cors());
 
 //Middleware to log details of the request
@@ -56,11 +58,11 @@ app.get("/info", (req, res) => {
   );
 });
 
-app.get("/", (req, res) => {
-  res.json(persons);
-});
+// app.get("/", (req, res) => {
+//   res.send("Hello, backend is working");
+// });
 
-//Get list of items
+//Get list of items - API endpoint for list of persons
 app.get("/api/persons/", (req, res) => {
   res.json(persons);
 });

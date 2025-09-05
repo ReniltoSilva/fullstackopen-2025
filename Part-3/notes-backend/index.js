@@ -28,11 +28,10 @@ let notes = [
 //This is a route to the application
 //--This route defines an event handler that handles HTTP get requests.
 //--"/api/notes" - this is a path
-{
-  app.get("/api/notes", (request, response) => {
-    response.json(notes);
-  });
-}
+
+app.get("/api/notes", (request, response) => {
+  response.json(notes);
+});
 
 //Get handler
 app.get("/api/notes/:id", (request, response) => {
