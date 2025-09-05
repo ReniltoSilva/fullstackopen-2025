@@ -1,17 +1,6 @@
 import axios from "axios";
-const baseUrl = "http://localhost:3001/notes";
-
-// const getAll = () => {
-//   return axios.get(baseURL);
-// };
-
-// const create = (newObject) => {
-//   return axios.post(baseURL, newObject);
-// };
-
-// const update = (id, newObject) => {
-//   return axios.put(`${baseURL}/${id}`, newObject);
-// };
+const baseUrl = "/api/notes";
+// const baseUrl = "https://render-test-uwhi.onrender.com/api/notes";
 
 //Adding variable 'request'
 const getAll = () => {

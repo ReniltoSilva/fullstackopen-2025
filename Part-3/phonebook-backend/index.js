@@ -1,6 +1,8 @@
 const express = require("express");
 const morgan = require("morgan");
+const cors = require("cors");
 const app = express();
+app.use(cors());
 
 //Middleware to log details of the request
 // const requestLogger = (request, response, next) => {
@@ -19,7 +21,6 @@ app.use(express.json());
 app.use(
   morgan(":method :url :status :res[content-length] :response-time ms :info")
 );
-
 // app.use(requestLogger);
 
 let persons = [

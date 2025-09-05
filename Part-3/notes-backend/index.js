@@ -1,7 +1,11 @@
 const express = require("express");
+// const cors = require("cors");
 const app = express();
 
+//MIddlewares
 app.use(express.json());
+// app.use(cors());
+app.use(express.static("dist"));
 
 let notes = [
   {
@@ -21,6 +25,9 @@ let notes = [
   },
 ];
 
+//This is a route to the application
+//--This route defines an event handler that handles HTTP get requests.
+//--"/api/notes" - this is a path
 {
   app.get("/api/notes", (request, response) => {
     response.json(notes);
@@ -40,13 +47,13 @@ app.get("/api/notes/:id", (request, response) => {
   }
 });
 
-//Post handler
 const generateId = () => {
   const maxId =
     notes.length > 0 ? Math.max(...notes.map((n) => Number(n.id))) : 0;
   return String(maxId + 1);
 };
 
+//Post handler
 app.post("/api/notes", (request, response) => {
   const body = request.body;
 
@@ -76,7 +83,7 @@ app.delete("/api/notes/:id", (request, response) => {
 });
 
 //Listen to port
-const PORT = 3001;
+const PORT = process.env.PORT || 3001;
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });
