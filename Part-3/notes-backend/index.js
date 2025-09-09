@@ -7,6 +7,16 @@ app.use(express.json());
 // app.use(cors());
 app.use(express.static("dist"));
 
+//Middleware to log details of the request
+const requestLogger = (request, response, next) => {
+  console.log("Method:", request.method);
+  console.log("Path:  ", request.path);
+  console.log("Body:  ", request.body);
+  console.log("---");
+  next();
+};
+app.use(requestLogger);
+
 let notes = [
   {
     id: "1",
