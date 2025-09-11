@@ -1,3 +1,6 @@
+require("dotenv").config();
+// const mongoose = require("mongoose");
+const Person = require("./models/person");
 const express = require("express");
 const morgan = require("morgan");
 //We don't need cors anymore since the static files are being served by the backend
@@ -25,28 +28,46 @@ app.use(
   morgan(":method :url :status :res[content-length] :response-time ms :info")
 );
 
-let persons = [
-  {
-    id: "1",
-    name: "Arto Hellas",
-    number: "040-123456",
-  },
-  {
-    id: "2",
-    name: "Ada Lovelace",
-    number: "39-44-5323523",
-  },
-  {
-    id: "3",
-    name: "Dan Abramov",
-    number: "12-43-234345",
-  },
-  {
-    id: "4",
-    name: "Mary Poppendieck",
-    number: "39-23-6423122",
-  },
-];
+// let persons = [
+//   {
+//     id: "1",
+//     name: "Arto Hellas",
+//     number: "040-123456",
+//   },
+//   {
+//     id: "2",
+//     name: "Ada Lovelace",
+//     number: "39-44-5323523",
+//   },
+//   {
+//     id: "3",
+//     name: "Dan Abramov",
+//     number: "12-43-234345",
+//   },
+//   {
+//     id: "4",
+//     name: "Mary Poppendieck",
+//     number: "39-23-6423122",
+//   },
+// ];
+
+// mongoose.set("strictQuery", false);
+// mongoose.connect(process.env.MONGODB_URI);
+
+// const personSchema = new mongoose.Schema({
+//   name: String,
+//   number: String,
+// });
+
+// const Person = mongoose.model("Person", personSchema);
+
+// personSchema.set("toJSON", {
+//   transform: (document, returnedObject) => {
+//     returnedObject.id = returnedObject._id.toString();
+//     delete returnedObject._id;
+//     delete returnedObject.__v;
+//   },
+// });
 
 app.get("/info", (req, res) => {
   const entries = persons.length;
@@ -64,68 +85,92 @@ app.get("/info", (req, res) => {
 
 //Get list of items - API endpoint for list of persons
 app.get("/api/persons/", (req, res) => {
-  res.json(persons);
+  Person.find({}).then((persons) => {
+    console.log(persons);
+    res.json(persons);
+  });
 });
 
-//Function to find person by id
-const findId = (id) => {
-  const person = persons.find((person) => person.id === id);
-  return person;
-};
+// //Function to find person by id
+// const findId = (id) => {
+//   const person = persons.find((person) => person.id === id);
+//   return person;
+// };
 
 //Get item by id
 app.get("/api/persons/:id", (req, res) => {
-  const person = findId(req.params.id);
+  // const person = findId(req.params.id);
+  //   //Check if item is available or not
+  //   if (person) {
+  //     res.json(person);
+  //   } else res.status(404).end();
 
-  //Check if item is available or not
-  if (person) {
-    res.json(person);
-  } else res.status(404).end();
+  Person.findOne({ _id: req.params.id }).then((result) => {
+    result ? res.json(result) : res.status(404).end();
+    console.log(result);
+  });
 });
 
 //Delete item from persons list
 app.delete("/api/persons/:id", (req, res) => {
-  const id = req.params.id;
-  persons = persons.filter((person) => person.id !== id);
+  // const id = req.params.id;
+  // persons = persons.filter((person) => person.id !== id);
 
-  console.log(res);
-  res.status(204).end();
+  // console.log(res);
+  // res.status(204).end();
+
+  Person.findByIdAndDelete({ _id: req.params.id }).then((person) => {
+    console.log(person);
+    res.status(202).end();
+  });
 });
 
-//Function to generate id
-const generateID = () => {
-  return persons.length > 0
-    ? Math.max(...persons.map((n) => Number(n.id) * Math.random()))
-    : 0;
-};
+// //Function to generate id
+// const generateID = () => {
+//   return persons.length > 0
+//     ? Math.max(...persons.map((n) => Number(n.id) * Math.random()))
+//     : 0;
+// };
 
 //Post new item to persons list
 app.post("/api/persons/", (request, res) => {
   const body = request.body;
-  const checkName = persons.find((item) => item.name === body.name);
+  // const checkName = persons.find((item) => item.name === body.name);
+  // const checkName = Person.exists({ name: body.name });
 
-  if (!body.name) {
-    return res.status(400).json({
-      error: "Name missing",
-    });
-  } else if (!body.number) {
-    return res.status(400).json({
-      error: "Number missing",
-    });
-  } else if (checkName) {
-    return res.status(400).json({
-      error: "Name already exists, it must be unique!",
-    });
-  }
+  // if (!body.name) {
+  //   return res.status(400).json({
+  //     error: "Name missing",
+  //   });
+  // } else if (!body.number) {
+  //   return res.status(400).json({
+  //     error: "Number missing",
+  //   });
+  // } else if (checkName) {
+  //   console.log(checkName);
+  //   return res.status(400).json({
+  //     error: "Name already exists, it must be unique!",
+  //   });
+  // }
 
-  const person = {
+  // const person = {
+  //   name: body.name,
+  //   number: body.number,
+  //   id: generateID(),
+  // };
+
+  // persons = persons.concat(person);
+  // res.status(201).json(person);
+
+  const person = new Person({
     name: body.name,
     number: body.number,
-    id: generateID(),
-  };
+  });
 
-  persons = persons.concat(person);
-  res.status(201).json(person);
+  person.save().then((result) => {
+    console.log(result);
+    res.status(201).end();
+  });
 });
 
 //Middleware to check for unknown endpoints
@@ -136,7 +181,7 @@ app.post("/api/persons/", (request, res) => {
 // app.use(unknownEndpoint);
 
 //Listen for requests on port 3001
-const PORT = process.env.PORT || 3001;
+const PORT = process.env.PORT;
 app.listen(PORT, () => {
   console.log(`Server runnin on port ${PORT}`);
 });
