@@ -15,14 +15,16 @@ app.use(
   morgan(":method :url :status :res[content-length] :response-time ms :info")
 );
 
-app.get("/info", (req, res) => {
-  const entries = persons.length;
-  const time = new Date();
-
-  res.send(
-    `<p>Phonebook has info for ${entries} people</p>
+app.get("/info", (req, res, next) => {
+  Person.countDocuments({})
+    .then((result) => {
+      const time = new Date();
+      res.send(
+        `<p>Phonebook has info for ${result} people</p>
     <p>${time}<p/>`
-  );
+      );
+    })
+    .catch((error) => next(error));
 });
 
 // app.get("/", (req, res) => {
@@ -30,43 +32,46 @@ app.get("/info", (req, res) => {
 // });
 
 //Get list of items - API endpoint for list of persons
-app.get("/api/persons/", (req, res) => {
-  Person.find({}).then((persons) => {
-    console.log(persons);
-    res.json(persons);
-  });
+app.get("/api/persons/", (req, res, next) => {
+  Person.find({})
+    .then((persons) => {
+      res.json(persons);
+    })
+    .catch((error) => next(error));
 });
 
 //Get item by id
-app.get("/api/persons/:id", (req, res) => {
+app.get("/api/persons/:id", (req, res, next) => {
   // const person = findId(req.params.id);
   //   //Check if item is available or not
   //   if (person) {
   //     res.json(person);
   //   } else res.status(404).end();
 
-  Person.findOne({ _id: req.params.id }).then((result) => {
-    result ? res.json(result) : res.status(404).end();
-    console.log(result);
-  });
+  Person.findOne({ _id: req.params.id })
+    .then((result) => {
+      result ? res.json(result) : res.status(404).end();
+    })
+    .catch((error) => next(error));
 });
 
 //Delete item from persons list
-app.delete("/api/persons/:id", (req, res) => {
+app.delete("/api/persons/:id", (req, res, next) => {
   // const id = req.params.id;
   // persons = persons.filter((person) => person.id !== id);
 
   // console.log(res);
   // res.status(204).end();
 
-  Person.findByIdAndDelete({ _id: req.params.id }).then((person) => {
-    console.log(person);
-    res.status(202).end();
-  });
+  Person.findByIdAndDelete({ _id: req.params.id })
+    .then((person) => {
+      res.status(202).end();
+    })
+    .catch((error) => next(error));
 });
 
 //Post new item to persons list
-app.post("/api/persons/", (request, res) => {
+app.post("/api/persons/", (request, res, next) => {
   const body = request.body;
   // const checkName = persons.find((item) => item.name === body.name);
   // const checkName = Person.exists({ name: body.name });
@@ -100,18 +105,30 @@ app.post("/api/persons/", (request, res) => {
     number: body.number,
   });
 
-  person.save().then((result) => {
-    console.log(result);
-    res.status(201).end();
-  });
+  person
+    .save()
+    .then((result) => {
+      res.status(201).end();
+    })
+    .catch((error) => next(error));
 });
 
-//Middleware to check for unknown endpoints
-// const unknownEndpoint = (request, response) => {
-//   response.status(404).send({ error: "unknown endpoint" });
-// };
+//Unknown endpoints middleware
+const unknownEndpoint = (request, response) => {
+  response.status(404).send({ error: "unknown endpoint" });
+};
+app.use(unknownEndpoint);
 
-// app.use(unknownEndpoint);
+//Error handling middleware
+const errorHandler = (error, req, res, next) => {
+  if (error.name === "CastError") {
+    return res.status(400).send({ error: "malformatted id" });
+  }
+
+  next(error);
+};
+
+app.use(errorHandler);
 
 //Listen for requests on port 3001
 const PORT = process.env.PORT;

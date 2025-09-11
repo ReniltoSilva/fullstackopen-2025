@@ -9,6 +9,7 @@ const Note = require("./models/note");
 const app = express();
 // const cors = require("cors");
 
+//Json-parser middleware
 app.use(express.json());
 // app.use(cors());
 app.use(express.static("dist"));
@@ -59,19 +60,24 @@ app.get("/api/notes", (request, response) => {
   });
 });
 
-app.get("/api/notes/:id", (request, response) => {
+app.get("/api/notes/:id", (request, response, next) => {
   // const id = request.params.id;
   // const note = notes.find((note) => note.id === request.params.id);
 
-  Note.findById(request.params.id).then((note) => {
-    note ? response.json(note) : response.status(404).end();
-  });
-
-  // if (note) {
-  //   response.json(note);
-  // } else {
-  //   response.status(404).end();
-  // }
+  Note.findById(request.params.id)
+    .then((note) => {
+      if (note) {
+        response.json(note);
+      } else {
+        response.status(404).end();
+      }
+    })
+    //This catch block is incase the promise returned is rejected
+    .catch((error) => {
+      next(error);
+      // console.log(error);
+      // response.status(500).send({ error: "malformatted id" });
+    });
 });
 
 //// Id generator commented out since mongoDB generate automatic IDs for each document in a collection
@@ -109,19 +115,66 @@ app.post("/api/notes", (request, response) => {
   });
 });
 
+app.put("/api/notes/:id", (request, response, next) => {
+  const { content, important } = request.body;
+
+  Note.findById(request.params.id)
+    .then((note) => {
+      if (!note) {
+        return response.status(404).end();
+      }
+
+      note.content = content;
+      note.important = important;
+
+      return note.save().then((updatedNote) => {
+        response.json(updatedNote);
+      });
+    })
+    .catch((error) => next(error));
+});
+
 //Delete handler
 app.delete("/api/notes/:id", (request, response) => {
   // const id = request.params.id;
   // note = notes.filter((note) => note.id !== id);
 
-  Note.deleteOne({ _id: request.params.id }).then((note) => {
-    console.log(note);
-    response.status(204).end();
-  });
+  Note.findByIdAndDelete({ _id: request.params.id })
+    .then((note) => {
+      console.log(note);
+      response.status(204).end();
+    })
+    .catch((error) => {
+      console.log(error);
+      next(error);
+    });
 
   // console.log(response);
   // response.status(204).end();
 });
+
+//-----Order loading of middlewares are important
+
+// Middleware to check for unknown endpoints
+const unknownEndpoint = (request, response) => {
+  response.status(404).send({ error: "unknown endpoint" });
+};
+
+app.use(unknownEndpoint);
+
+//Error handler middleware
+const errorHandler = (error, request, response, next) => {
+  console.error(error.message);
+
+  if (error.name === "CastError") {
+    return response.status(400).send({ error: "malformatted id" });
+  }
+
+  next(error);
+};
+
+// this has to be the last loaded middleware, also all the routes should be registered before this!
+app.use(errorHandler);
 
 //Listen to port
 const PORT = process.env.PORT;
