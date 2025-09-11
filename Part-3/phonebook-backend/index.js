@@ -1,22 +1,9 @@
 require("dotenv").config();
-// const mongoose = require("mongoose");
 const Person = require("./models/person");
 const express = require("express");
 const morgan = require("morgan");
 //We don't need cors anymore since the static files are being served by the backend
-// const cors = require("cors");
-// app.use(cors());
 const app = express();
-
-//Middleware to log details of the request
-// const requestLogger = (request, response, next) => {
-//   console.log("Method:", request.method);
-//   console.log("Path:  ", request.path);
-//   console.log("Body:  ", request.body);
-//   console.log("---");
-//   next();
-// };
-// app.use(requestLogger);
 
 morgan.token("info", function (req, res) {
   return JSON.stringify(req.body);
@@ -27,47 +14,6 @@ app.use(express.json());
 app.use(
   morgan(":method :url :status :res[content-length] :response-time ms :info")
 );
-
-// let persons = [
-//   {
-//     id: "1",
-//     name: "Arto Hellas",
-//     number: "040-123456",
-//   },
-//   {
-//     id: "2",
-//     name: "Ada Lovelace",
-//     number: "39-44-5323523",
-//   },
-//   {
-//     id: "3",
-//     name: "Dan Abramov",
-//     number: "12-43-234345",
-//   },
-//   {
-//     id: "4",
-//     name: "Mary Poppendieck",
-//     number: "39-23-6423122",
-//   },
-// ];
-
-// mongoose.set("strictQuery", false);
-// mongoose.connect(process.env.MONGODB_URI);
-
-// const personSchema = new mongoose.Schema({
-//   name: String,
-//   number: String,
-// });
-
-// const Person = mongoose.model("Person", personSchema);
-
-// personSchema.set("toJSON", {
-//   transform: (document, returnedObject) => {
-//     returnedObject.id = returnedObject._id.toString();
-//     delete returnedObject._id;
-//     delete returnedObject.__v;
-//   },
-// });
 
 app.get("/info", (req, res) => {
   const entries = persons.length;
@@ -90,12 +36,6 @@ app.get("/api/persons/", (req, res) => {
     res.json(persons);
   });
 });
-
-// //Function to find person by id
-// const findId = (id) => {
-//   const person = persons.find((person) => person.id === id);
-//   return person;
-// };
 
 //Get item by id
 app.get("/api/persons/:id", (req, res) => {
@@ -124,13 +64,6 @@ app.delete("/api/persons/:id", (req, res) => {
     res.status(202).end();
   });
 });
-
-// //Function to generate id
-// const generateID = () => {
-//   return persons.length > 0
-//     ? Math.max(...persons.map((n) => Number(n.id) * Math.random()))
-//     : 0;
-// };
 
 //Post new item to persons list
 app.post("/api/persons/", (request, res) => {
