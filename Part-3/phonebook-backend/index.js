@@ -65,14 +65,30 @@ app.delete("/api/persons/:id", (req, res, next) => {
 
   Person.findByIdAndDelete({ _id: req.params.id })
     .then((person) => {
-      res.status(202).end();
+      res.status(202).json(person);
+    })
+    .catch((error) => next(error));
+});
+
+//Find and update item by id
+app.put("/api/persons/:id", (req, res, next) => {
+  const { name, number } = req.body;
+  if (!number) {
+    res.status(400).json({ error: "Number missing" });
+  }
+
+  const update = { name, number };
+
+  Person.findByIdAndUpdate(req.params.id, update, { new: true })
+    .then((result) => {
+      res.status(200).json(result);
     })
     .catch((error) => next(error));
 });
 
 //Post new item to persons list
-app.post("/api/persons/", (request, res, next) => {
-  const body = request.body;
+app.post("/api/persons/", (req, res, next) => {
+  const body = req.body;
   // const checkName = persons.find((item) => item.name === body.name);
   // const checkName = Person.exists({ name: body.name });
 
@@ -108,7 +124,7 @@ app.post("/api/persons/", (request, res, next) => {
   person
     .save()
     .then((result) => {
-      res.status(201).end();
+      res.status(201).json(result);
     })
     .catch((error) => next(error));
 });

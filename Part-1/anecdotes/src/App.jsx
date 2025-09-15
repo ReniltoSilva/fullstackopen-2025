@@ -1,4 +1,9 @@
 import { useState } from "react";
+const Buffer = require("buffer").Buffer;
+
+const buf = Buffer.from("hello world", "utf8");
+
+console.log(buf.toString("utf8"));
 
 const MostVoted = ({ anecdote, votes }) => {
   if (votes)
