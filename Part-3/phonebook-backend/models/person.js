@@ -14,8 +14,18 @@ mongoose
   });
 
 const personSchema = new mongoose.Schema({
-  name: String,
+  name: {
+    type: String,
+    minLength: [
+      3,
+      "Path name `({VALUE})` is shorter than the minimun allowed length (3)",
+    ],
+    required: true,
+  },
   number: String,
+
+  // name: String,
+  // number: String,
 });
 
 personSchema.set("toJSON", {

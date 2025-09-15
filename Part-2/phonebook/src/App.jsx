@@ -70,15 +70,34 @@ const App = () => {
         // id: persons[persons.length - 1].id + 1,
       };
 
-      personsServices.createPerson(newPerson).then((response) => {
-        setPersons(persons.concat(response));
+      personsServices
+        .createPerson(newPerson)
+        .then((response) => {
+          console.log(response);
+          setPersons(persons.concat(response));
 
-        setSuccessMessage(`${newName} was added successfully`);
+          setSuccessMessage(`${newName} was added successfully`);
 
-        setTimeout(() => {
-          setSuccessMessage(null);
-        }, 4000);
-      });
+          setTimeout(() => {
+            setSuccessMessage(null);
+          }, 4000);
+        })
+        .catch((error) => console.log(error.response.data.error));
+      // .catch((error) => {
+      //   if (
+      //     error.response &&
+      //     error.response.data &&
+      //     error.response.data.error
+      //   ) {
+      //     console.log("Validation error:", error.response.data.error);
+      //     setErrorMessage(error.response.data.error);
+      //     setTimeout(() => setErrorMessage(null), 4000);
+      //   } else {
+      //     console.log("Unknown error:", error.message);
+      //     setErrorMessage("Something went wrong");
+      //     setTimeout(() => setErrorMessage(null), 4000);
+      //   }
+      // });
 
       // axios
       //   .post("http://localhost:3001/persons", newPerson)

@@ -15,8 +15,15 @@ mongoose
   });
 
 const noteSchema = new mongoose.Schema({
-  content: String,
+  content: {
+    type: String,
+    minLength: [5, "Required min 5 characters, got only {VALUE}"],
+    required: true,
+  },
   important: Boolean,
+
+  // content: String,
+  // important: Boolean,
 });
 
 noteSchema.set("toJSON", {

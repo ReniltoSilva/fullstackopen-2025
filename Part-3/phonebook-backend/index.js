@@ -126,7 +126,9 @@ app.post("/api/persons/", (req, res, next) => {
     .then((result) => {
       res.status(201).json(result);
     })
-    .catch((error) => next(error));
+    .catch((error) => {
+      next(error);
+    });
 });
 
 //Unknown endpoints middleware
@@ -137,8 +139,12 @@ app.use(unknownEndpoint);
 
 //Error handling middleware
 const errorHandler = (error, req, res, next) => {
+  console.log(error.message);
+
   if (error.name === "CastError") {
     return res.status(400).send({ error: "malformatted id" });
+  } else if (error.name === "ValidationError") {
+    return res.status(400).json({ error: error.message });
   }
 
   next(error);
