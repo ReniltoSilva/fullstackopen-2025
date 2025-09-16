@@ -5,7 +5,7 @@ const morgan = require("morgan");
 //We don't need cors anymore since the static files are being served by the backend
 const app = express();
 
-morgan.token("info", function (req, res) {
+morgan.token("info", function (req) {
   return JSON.stringify(req.body);
 });
 
