@@ -1,4 +1,4 @@
-# Helsinki Full Stack Course
+#Helsinki Full Stack Course
 
 This repository contains my solutions and projects for the Full Stack Open
 course offered by the University of Helsinki.
