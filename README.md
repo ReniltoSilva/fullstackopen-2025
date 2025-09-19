@@ -1,11 +1,11 @@
-#Helsinki Full Stack Course
+# Helsinki Full Stack Course
 
-This repository contains my solutions and projects for the Full Stack Open
-course offered by the University of Helsinki.
+**This repository contains my solutions and projects for the Full Stack Open
+course offered by the University of Helsinki.**
 
 ## 📚 About the Course
 
-### Full Stack Open is a modern web development course focusing on:
+**Full Stack Open is a modern web development course focusing on:**
 
 JavaScript (ES6+)
 
@@ -27,7 +27,7 @@ The course emphasizes hands-on projects and building full-stack applications fro
 
 ## 📂 Repository Structure
 
-### Each part of the course has its own directory:
+**Each part of the course has its own directory:**
 
 part0/ → Fundamentals of Web apps
 
@@ -45,7 +45,7 @@ Inside each folder, you’ll find exercises and mini-projects for that part.
 
 ## 🚀 Goals
 
-I’m using this repo to:
+**I’m using this repo to:**
 
 Practice full-stack web development
 
