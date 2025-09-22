@@ -1,0 +1,30 @@
+GET http://localhost:3001/api/blogs/
+
+###
+GET http://localhost:3001/api/blogs/2
+
+###
+POST http://localhost:3001/api/blogs/
+content-type: application/json
+
+{
+    "title": "New meta AI",
+    "author": "Clare",
+    "url": "www/google.com/asdf/asdfasdf/asdf",
+    "likes": 94
+}
+
+###
+PUT http://localhost:3001/api/blogs/68cd919ff50ea9f46b825bf0
+content-type: application/json
+
+{
+    "title": "Perplexity AI",
+    "author": "Col",
+    "url": "www/google.com/asdf/fasdf/asdf",
+    "likes": 100
+}
+
+###
+DELETE http://localhost:3001/api/blogs/68d165a612e52e50af2e7bcf
+
