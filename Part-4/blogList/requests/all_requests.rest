@@ -26,5 +26,5 @@ content-type: application/json
 }
 
 ###
-DELETE http://localhost:3001/api/blogs/68d165a612e52e50af2e7bcf
+DELETE http://localhost:3001/api/blogs/68d168aaa178ba93cf307cfc
 
