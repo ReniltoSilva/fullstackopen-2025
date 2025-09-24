@@ -13,4 +13,12 @@ const totalLikes = (blogPosts) => {
       .reduce((acc, total) => acc + total, 0);
 };
 
-module.exports = { dummy, totalLikes };
+const favoriteBlog = (blogList) => {
+  const mostLiked = blogList.reduce((acc, item) =>
+    acc > item.likes ? acc : item.likes
+  );
+  const item = blogList.find((item) => item.likes === mostLiked);
+  return item;
+};
+
+module.exports = { dummy, totalLikes, favoriteBlog };

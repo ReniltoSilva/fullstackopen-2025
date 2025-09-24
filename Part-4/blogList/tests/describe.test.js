@@ -92,3 +92,9 @@ describe("total likes", () => {
     assert.strictEqual(listHelper.totalLikes(blog), blog[0].likes);
   });
 });
+
+describe("Favorite blog", () => {
+  test("blog with most likes", () => {
+    assert.deepStrictEqual(listHelper.favoriteBlog(blogs), blogs[2]);
+  });
+});
