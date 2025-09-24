@@ -15,16 +15,16 @@ content-type: application/json
 }
 
 ###
-PUT http://localhost:3001/api/blogs/68cd919ff50ea9f46b825bf0
+PUT http://localhost:3001/api/blogs/68d2b059425faa5ae325586f
 content-type: application/json
 
 {
-    "title": "Perplexity AI",
-    "author": "Col",
-    "url": "www/google.com/asdf/fasdf/asdf",
-    "likes": 100
+    "title": "Youtube Ai",
+    "author": "Maria",
+    "url": "www/youtube.com/asdf/fasdf/asdf",
+    "likes": 124
 }
 
 ###
-DELETE http://localhost:3001/api/blogs/68d168aaa178ba93cf307cfc
+DELETE http://localhost:3001/api/blogs/68cd92ead86207cd61f078c9
 
