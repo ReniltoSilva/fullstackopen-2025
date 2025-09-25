@@ -1,3 +1,5 @@
+const lodash = require("lodash");
+
 const dummy = (blogs) => {
   return 1;
 };
@@ -20,5 +22,21 @@ const favoriteBlog = (blogList) => {
   const item = blogList.find((item) => item.likes === mostLiked);
   return item;
 };
+const mostBlogs = (blogList) => {
+  const counts = blogList.reduce((acc, { author }) => {
+    acc[author] = (acc[author] || 0) + 1;
+    return acc;
+  }, {});
 
-module.exports = { dummy, totalLikes, favoriteBlog };
+  // console.log(counts);
+  let top = { author: null, blogs: 0 };
+  for (const [author, num] of Object.entries(counts)) {
+    if (num > top.blogs) {
+      top = { author, blogs: num };
+    }
+  }
+  // console.log(top);
+  return top;
+};
+
+module.exports = { dummy, totalLikes, favoriteBlog, mostBlogs };
