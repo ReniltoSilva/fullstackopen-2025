@@ -22,6 +22,7 @@ const favoriteBlog = (blogList) => {
   const item = blogList.find((item) => item.likes === mostLiked);
   return item;
 };
+
 const mostBlogs = (blogList) => {
   const counts = blogList.reduce((acc, { author }) => {
     acc[author] = (acc[author] || 0) + 1;
@@ -39,4 +40,20 @@ const mostBlogs = (blogList) => {
   return top;
 };
 
-module.exports = { dummy, totalLikes, favoriteBlog, mostBlogs };
+const mostLikes = (blogList) => {
+  let blogLikes = blogList.reduce((acc, item) => {
+    acc[item.author] = (acc[item.author] || 0) + item.likes;
+    return acc;
+  }, {});
+
+  let top = { author: null, likes: 0 };
+  for (const [author, likes] of Object.entries(blogLikes)) {
+    if (likes > top.likes) {
+      top = { author, likes };
+    }
+  }
+
+  return top;
+};
+
+module.exports = { dummy, totalLikes, favoriteBlog, mostBlogs, mostLikes };
