@@ -1,5 +1,8 @@
 // const mongoose = require("mongoose");
 
+//---------I DON'T KNOW IF THIS BLOCK OF CODE IS SUPPOSED TO BE HERE IN MONGO.JS
+//PART-4 -> Initializing the database before tests
+
 // if (process.argv.length < 3) {
 //   console.log("give password as argument");
 //   process.exit(1);
@@ -58,3 +61,18 @@
 // //   console.log(result);
 // //   mongoose.connection.close();
 // // });
+
+const assert = require("node:assert");
+
+test("all notes are returned", async () => {
+  const response = await api.get("/api/notes");
+
+  assert.strictEqual(response.body.length, initialNotes.length);
+});
+
+test("a specific note is within the returned notes", async () => {
+  const response = await api.get("/api/notes");
+
+  const contents = response.body.map((e) => e.content);
+  assert.strictEqual(contents.includes("HTML is easy"));
+});
