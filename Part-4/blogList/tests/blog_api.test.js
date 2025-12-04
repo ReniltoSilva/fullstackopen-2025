@@ -53,7 +53,7 @@ test("successfully created a new blog post", async () => {
   await api
     .post("/api/blogs")
     .send(newBlog)
-    .expect(200)
+    .expect(201)
     .expect("Content-Type", /application\/json/);
 
   const after = await api.get("/api/blogs");
@@ -62,10 +62,17 @@ test("successfully created a new blog post", async () => {
 });
 
 test("Verifies if likes property is missing", async () => {
+  const testBlog = {
+    title: "The King and the princess",
+    author: "John Arthur",
+    url: "www.theking.com",
+    // likes: 30,
+  };
+
   await api
     .post("/api/blogs")
-    .send(newBlog)
-    .expect(200)
+    .send(testBlog)
+    .expect(201)
     .expect("Content-Type", /application\/json/);
 
   response = await api.get("/api/blogs");
@@ -74,7 +81,7 @@ test("Verifies if likes property is missing", async () => {
   assert.strictEqual(response.body[0].likes, 0);
 });
 
-test.only("fail if the title is missing", async () => {
+test("fail if the title is missing", async () => {
   const testBlog = {
     // title: "The King and the princess",
     author: "John Arthur",
@@ -86,7 +93,7 @@ test.only("fail if the title is missing", async () => {
   await api.post("/api/blogs").send(testBlog).expect(400);
 });
 
-test.only("Fail if url is missing", async () => {
+test("Fail if url is missing", async () => {
   const testBlog = {
     title: "The King and the princess",
     author: "John Arthur",
@@ -96,6 +103,33 @@ test.only("Fail if url is missing", async () => {
 
   //.expect() belongs to supertest and not node:assert
   await api.post("/api/blogs").send(testBlog).expect(400);
+});
+
+test("Delete single blog post resource", async () => {
+  const before = await api.get("/api/blogs");
+
+  await api.delete(`/api/blogs/${before.body[0].id}`).expect(204);
+
+  const after = await api.get("/api/blogs");
+
+  assert.strictEqual(after.body.length, before.body.length - 1);
+});
+
+test.only("Update info on individual blog post", async () => {
+  const testBlog = {
+    title: "The King and the princess",
+    author: "John Arthur",
+    url: "www.theking.com",
+    likes: 2300,
+  };
+
+  const before = await api.get("/api/blogs");
+
+  await api.put(`/api/blogs/${before.body[0].id}`).send(testBlog).expect(200);
+
+  const after = await api.get("/api/blogs");
+
+  assert.strictEqual(testBlog.likes, after.body[0].likes);
 });
 
 after(async () => {
