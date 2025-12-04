@@ -22,12 +22,12 @@ const newBlog = {
   title: "The King and the princess",
   author: "John Arthur",
   url: "www.theking.com",
-  // likes: 30,
+  likes: 30,
 };
 
 beforeEach(async () => {
   await Blog.deleteMany({});
-  // await Blog.insertMany(helper.initialBlogs);
+  await Blog.insertMany(helper.initialBlogs);
 });
 
 test("blogs are returned as json and correct amount", async () => {
@@ -61,7 +61,7 @@ test("successfully created a new blog post", async () => {
   assert.strictEqual(after.body.length, before.body.length + 1);
 });
 
-test.only("Verifies if likes property is missing", async () => {
+test("Verifies if likes property is missing", async () => {
   await api
     .post("/api/blogs")
     .send(newBlog)
@@ -72,6 +72,30 @@ test.only("Verifies if likes property is missing", async () => {
 
   // console.log("Response returned from server", response.body);
   assert.strictEqual(response.body[0].likes, 0);
+});
+
+test.only("fail if the title is missing", async () => {
+  const testBlog = {
+    // title: "The King and the princess",
+    author: "John Arthur",
+    url: "www.theking.com",
+    likes: 30,
+  };
+
+  //.expect() belongs to supertest and not node:assert
+  await api.post("/api/blogs").send(testBlog).expect(400);
+});
+
+test.only("Fail if url is missing", async () => {
+  const testBlog = {
+    title: "The King and the princess",
+    author: "John Arthur",
+    // url: "www.theking.com",
+    likes: 30,
+  };
+
+  //.expect() belongs to supertest and not node:assert
+  await api.post("/api/blogs").send(testBlog).expect(400);
 });
 
 after(async () => {

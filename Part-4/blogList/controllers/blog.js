@@ -24,7 +24,11 @@ blogsRouter.get("/:id", (req, res, next) => {
 blogsRouter.post("/", async (req, res) => {
   const body = req.body;
 
-  if (!body) return res.status(404).json({ error: "content is missing" });
+  if (!body) {
+    return res.status(400).json({ error: "content is missing" });
+  } else if (!body.title || !body.url) {
+    return res.status(400).json({ error: "Title or url missing" });
+  }
 
   const newitem = new Blog({
     title: body.title,
