@@ -2,12 +2,10 @@ const Blog = require("../models/blog");
 
 const initialBlogs = [
   {
-    content: "HTML is easy",
-    important: false,
-  },
-  {
-    content: "Browser can execute only JavaScript",
-    important: true,
+    title: "The whale",
+    author: "John Arthur",
+    url: "www.thewhale.com",
+    likes: 30,
   },
 ];
 

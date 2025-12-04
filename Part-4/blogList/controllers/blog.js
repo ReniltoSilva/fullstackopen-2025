@@ -21,7 +21,7 @@ blogsRouter.get("/:id", (req, res, next) => {
     .catch((err) => next(err));
 });
 
-blogsRouter.post("/", (req, res) => {
+blogsRouter.post("/", async (req, res) => {
   const body = req.body;
 
   if (!body) return res.status(404).json({ error: "content is missing" });
@@ -33,12 +33,15 @@ blogsRouter.post("/", (req, res) => {
     likes: body.likes,
   });
 
-  newitem
-    .save()
-    .then((result) => {
-      res.json(result);
-    })
-    .catch((err) => next(err));
+  // newitem
+  //   .save()
+  //   .then((result) => {
+  //     res.json(result);
+  //   })
+  //   .catch((err) => next(err));
+
+  await newitem.save();
+  res.json();
 });
 
 blogsRouter.put("/:id", (req, res) => {
