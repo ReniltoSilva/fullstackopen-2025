@@ -8,29 +8,42 @@ usersRouter.get("/", async (req, res) => {
   res.status(200).json(usersDB);
 });
 
-usersRouter.post("/", async (req, res) => {
-  const { username, name, password } = req.body;
+usersRouter.post("/", async (req, res, next) => {
+  try {
+    const { username, name, password } = req.body;
+    if (!username || !password) {
+      return res.status(400).json({ error: "username and password required" });
+    }
 
-  //Search for username
-  //   const checkUser = await User.findOne({ username });
+    if (username.length < 3 || password.length < 3) {
+      return res.status(400).json({
+        error: "Username and Password should be minimum 3 characters long",
+      });
+    }
 
-  //Hash password
-  const passwordHash = await bcrypt.hash(password, 10);
+    //Search for username
+    //   const checkUser = await User.findOne({ username });
 
-  const newUser = new User({
-    name,
-    username,
-    passwordHash,
-  });
+    //Hash password
+    const passwordHash = await bcrypt.hash(password, 10);
 
-  //Check if user exists
-  //   if (username) {
-  //     res.status(400).json({ error: "username must be unique" });
-  //   }
+    const newUser = new User({
+      name,
+      username,
+      passwordHash,
+    });
 
-  //If not, save new user and return as response
-  const savedUser = await newUser.save();
-  res.status(201).json(savedUser);
+    //Check if user exists
+    //   if (username) {
+    //     res.status(400).json({ error: "username must be unique" });
+    //   }
+
+    //If not, save new user and return as response
+    const savedUser = await newUser.save();
+    res.status(201).json(savedUser);
+  } catch (error) {
+    next(error);
+  }
 });
 
 module.exports = usersRouter;
