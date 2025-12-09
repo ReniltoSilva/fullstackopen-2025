@@ -115,7 +115,7 @@ test("Delete single blog post resource", async () => {
   assert.strictEqual(after.body.length, before.body.length - 1);
 });
 
-test.only("Update info on individual blog post", async () => {
+test("Update info on individual blog post", async () => {
   const testBlog = {
     title: "The King and the princess",
     author: "John Arthur",

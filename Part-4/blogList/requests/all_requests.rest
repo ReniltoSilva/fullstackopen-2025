@@ -28,3 +28,16 @@ content-type: application/json
 ###
 DELETE http://localhost:3001/api/blogs/68cd92ead86207cd61f078c9
 
+###
+POST http://localhost:3001/api/users/
+Content-Type: application/json
+
+{
+    "username": "newww",
+    "name": "Renilto",
+    "password": "hahaha"
+}
+
+###
+GET http://localhost:3001/api/users/
+
