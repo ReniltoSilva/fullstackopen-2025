@@ -1,11 +1,17 @@
 const usersRouter = require("express").Router();
 const bcrypt = require("bcrypt");
 const User = require("../models/user");
+const Blog = require("../models/blog");
 
 usersRouter.get("/", async (req, res) => {
-  const usersDB = await User.find({});
+  const users = await User.find({}).populate("blogs", {
+    title: 1,
+    author: 1,
+    url: 1,
+    likes: 1,
+  });
 
-  res.status(200).json(usersDB);
+  res.json(users);
 });
 
 usersRouter.post("/", async (req, res, next) => {
@@ -44,6 +50,12 @@ usersRouter.post("/", async (req, res, next) => {
   } catch (error) {
     next(error);
   }
+});
+
+usersRouter.delete("/:id", async (req, res) => {
+  await User.findByIdAndDelete({ _id: req.params.id });
+
+  res.status(204).json("User deleted from DB");
 });
 
 module.exports = usersRouter;

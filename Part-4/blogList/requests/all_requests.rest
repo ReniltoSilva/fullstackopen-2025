@@ -11,7 +11,9 @@ content-type: application/json
     "title": "New meta AI",
     "author": "Clare",
     "url": "www/google.com/asdf/asdfasdf/asdf",
-    "likes": 94
+    "likes": 94,
+    "userId": "6937c2c649ab6dd07b101dad"
+
 }
 
 ###
@@ -26,18 +28,22 @@ content-type: application/json
 }
 
 ###
-DELETE http://localhost:3001/api/blogs/68cd92ead86207cd61f078c9
+DELETE http://localhost:3001/api/blogs/69384e3c51dd0aa592bfdb16
+
+-----------------------------------------------------------------------------------
+
+###
+GET http://localhost:3001/api/users/
 
 ###
 POST http://localhost:3001/api/users/
 Content-Type: application/json
 
 {
-    "username": "jek",
+    "username": "test",
     "name": "Renilto",
     "password": "her"
 }
 
 ###
-GET http://localhost:3001/api/users/
-
+DELETE http://localhost:3001/api/users/6937c4af0c5b6b69c86564a3

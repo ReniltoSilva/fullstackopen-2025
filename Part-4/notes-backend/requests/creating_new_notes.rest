@@ -1,5 +1,5 @@
 POST http://localhost:3001/api/notes/
-# Authorization: Bearer "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IkNoYW9saW4iLCJpZCI6IjY5MzU1NmEyYjQxMDZiNWY1NzBmYmNlYyIsImlhdCI6MTc2NTI0MzA1MSwiZXhwIjoxNzY1MjQ2NjUxfQ.nbi-p8QO7pEowl1LRJzL7f1qTeaMRmYq0h7ifBOEvUs"
+Authorization: Bearer "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IkNoYW9saW4iLCJpZCI6IjY5MzU1NmEyYjQxMDZiNWY1NzBmYmNlYyIsImlhdCI6MTc2NTI5NzE1NSwiZXhwIjoxNzY1MzAwNzU1fQ.IpfzPm5Wa-Kli8WX2rRVh3U4f-JdMV6ITUDVGLQwb1w"
 content-type: application/json
 
     {

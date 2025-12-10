@@ -1,8 +1,13 @@
 const blogsRouter = require("express").Router();
 const Blog = require("../models/blog");
+const User = require("../models/user");
 
 blogsRouter.get("/", async (req, res) => {
-  const blogs = await Blog.find({});
+  const blogs = await Blog.find({}).populate("user", {
+    username: 1,
+    name: 1,
+    id: 1,
+  });
   res.json(blogs);
   // .then((result) => {
   //   res.json(result);
@@ -25,6 +30,11 @@ blogsRouter.get("/:id", async (req, res, next) => {
 
 blogsRouter.post("/", async (req, res) => {
   const body = req.body;
+  const user = await User.findById(body.userId);
+  console.log(req.body);
+  if (!user) {
+    return res.status(400).json({ error: "userId missing or not valid" });
+  }
 
   if (!body) {
     return res.status(400).json({ error: "content is missing" });
@@ -37,6 +47,7 @@ blogsRouter.post("/", async (req, res) => {
     author: body.author,
     url: body.url,
     likes: body.likes,
+    user: user._id,
   });
   // newitem
   //   .save()
@@ -46,6 +57,9 @@ blogsRouter.post("/", async (req, res) => {
   //   .catch((err) => next(err));
 
   const blog = await newitem.save();
+  user.blogs = user.blogs.concat(blog._id);
+  await user.save();
+
   res.status(201).json(blog);
 });
 

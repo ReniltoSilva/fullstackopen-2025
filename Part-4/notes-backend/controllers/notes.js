@@ -42,6 +42,7 @@ notesRouter.post("/", async (request, response) => {
   const user = await User.findById(decodedToken.id);
   // const user = await User.findById(body.userId);
 
+  console.log(user);
   if (!user) {
     return response.status(400).json({ error: "userId missing or not valid" });
   }

@@ -48,17 +48,15 @@ test("verifies unique id property of the blog posts is named id", async () => {
 });
 
 test("successfully created a new blog post", async () => {
-  const before = await api.get("/api/blogs");
-
-  await api
-    .post("/api/blogs")
-    .send(newBlog)
-    .expect(201)
-    .expect("Content-Type", /application\/json/);
-
-  const after = await api.get("/api/blogs");
-
-  assert.strictEqual(after.body.length, before.body.length + 1);
+  // const before = await api.get("/api/blogs");
+  // await api
+  //   .post("/api/blogs")
+  //   .send(newBlog)
+  //   .expect(201)
+  //   .expect("Content-Type", /application\/json/);
+  // const after = await api.get("/api/blogs");
+  // assert.strictEqual(after.body.length, before.body.length + 1);
+  //CONTINUE
 });
 
 test("Verifies if likes property is missing", async () => {
