@@ -6,10 +6,10 @@ GET http://localhost:3001/api/blogs/2
 ###
 POST http://localhost:3001/api/blogs/
 content-type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Im5ldyBVc2VyIiwiaWQiOiI2OTM5MDAyZjIxNWYwZTk3NGJmOTNjMjQiLCJpYXQiOjE3NjUzODMwMjV9.VZJMwW9YER7TvZNa1C6vov4Ms-Df-NQv8H5zN1449dE
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Im5ldyBVc2VyIiwiaWQiOiI2OTM5MDAyZjIxNWYwZTk3NGJmOTNjMjQiLCJpYXQiOjE3NjUzODUxMzB9.lM_1lS2-OF34MVhk7F9My5LdrAQkdRqmPfebJ8XA4lM
 
 {
-    "title": "Vem, que vem, que vem, com o pai",
+    "title": "teste, teste, teste",
     "author": "Clare",
     "url": "www/asdf",
     "likes": 1000
