@@ -6,14 +6,13 @@ GET http://localhost:3001/api/blogs/2
 ###
 POST http://localhost:3001/api/blogs/
 content-type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Im5ldyBVc2VyIiwiaWQiOiI2OTM5MDAyZjIxNWYwZTk3NGJmOTNjMjQiLCJpYXQiOjE3NjUzODMwMjV9.VZJMwW9YER7TvZNa1C6vov4Ms-Df-NQv8H5zN1449dE
 
 {
-    "title": "New meta AI",
+    "title": "Vem, que vem, que vem, com o pai",
     "author": "Clare",
-    "url": "www/google.com/asdf/asdfasdf/asdf",
-    "likes": 94,
-    "userId": "6937c2c649ab6dd07b101dad"
-
+    "url": "www/asdf",
+    "likes": 1000
 }
 
 ###
@@ -28,7 +27,7 @@ content-type: application/json
 }
 
 ###
-DELETE http://localhost:3001/api/blogs/69384e3c51dd0aa592bfdb16
+DELETE http://localhost:3001/api/blogs/69390252e19e6648c2368c71
 
 -----------------------------------------------------------------------------------
 
@@ -40,13 +39,13 @@ POST http://localhost:3001/api/users/
 Content-Type: application/json
 
 {
-    "username": "test",
+    "username": "new User",
     "name": "Renilto",
     "password": "her"
 }
 
 ###
-DELETE http://localhost:3001/api/users/6937c4af0c5b6b69c86564a3
+DELETE http://localhost:3001/api/users/6938f452b540731c7a987993
 
 -----------------------------------------------------------------------------------
 ###
@@ -54,7 +53,7 @@ POST http://localhost:3001/api/login/
 Content-Type: application/json
 
 {
-      "username": "test",
+      "username": "new User",
     "name": "Renilto",
     "password": "her"
 }
