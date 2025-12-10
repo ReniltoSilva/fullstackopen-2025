@@ -47,3 +47,14 @@ Content-Type: application/json
 
 ###
 DELETE http://localhost:3001/api/users/6937c4af0c5b6b69c86564a3
+
+-----------------------------------------------------------------------------------
+###
+POST http://localhost:3001/api/login/
+Content-Type: application/json
+
+{
+      "username": "test",
+    "name": "Renilto",
+    "password": "her"
+}
