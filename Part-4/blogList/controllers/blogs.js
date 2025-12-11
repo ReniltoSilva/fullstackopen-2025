@@ -2,7 +2,7 @@ const blogsRouter = require("express").Router();
 const jwt = require("jsonwebtoken");
 const Blog = require("../models/blog");
 const User = require("../models/user");
-const { request } = require("../app");
+const { userExtractor } = require("../utils/middleware");
 
 // const getTokenFrom = (request) => {
 //   const authorization = request.get("authorization");
@@ -26,7 +26,7 @@ blogsRouter.get("/", async (req, res) => {
 });
 
 blogsRouter.get("/:id", async (req, res, next) => {
-  const blog = await Blog.findById({ _id: req.params.id });
+  const blog = await Blog.findById(req.params.id);
 
   res.status(200).json(blog);
   // .then((result) => {
@@ -37,11 +37,12 @@ blogsRouter.get("/:id", async (req, res, next) => {
   //   }
   // })
   // .catch((err) => next(err));
+  next();
 });
 
-blogsRouter.post("/", async (req, res) => {
+blogsRouter.post("/", userExtractor, async (req, res) => {
   const body = req.body;
-
+  const userInfo = req.user;
   /* Check the validity of the token sent by the request, 
   it will check the signature with the secret key
   and return the decoded payload(the original object stored in the token) */
@@ -108,7 +109,9 @@ blogsRouter.put("/:id", async (req, res) => {
   // .catch((err) => next(err));
 });
 
-blogsRouter.delete("/:id", async (req, res, next) => {
+blogsRouter.delete("/:id", userExtractor, async (req, res, next) => {
+  const userInfo = req.user;
+
   try {
     const decodedToken = jwt.verify(req.token, process.env.SECRET);
 
@@ -127,7 +130,7 @@ blogsRouter.delete("/:id", async (req, res, next) => {
     }
 
     /* Specific when client know what they are deleting
-  don't need to return anything, more efficient 
+  don't need to return anything, more efficient
   cause it's less bandwidth */
     await Blog.findByIdAndDelete(req.params.id);
     res.status(204).end();

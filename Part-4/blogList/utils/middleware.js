@@ -1,5 +1,8 @@
 const logger = require("./logger");
+const jwt = require("jsonwebtoken");
+const User = require("../models/user");
 
+/* Add token to header before reaching the routes */
 const extractToken = (request, response, next) => {
   const authorization = request.get("authorization");
 
@@ -7,6 +10,14 @@ const extractToken = (request, response, next) => {
     const token = authorization.replace("Bearer ", "");
     request.token = token;
   }
+  next();
+};
+
+/* Add user info to header before reaching the routes */
+const userExtractor = async (request, response, next) => {
+  const userInfo = jwt.verify(request.token, process.env.SECRET);
+  const user = await User.findById(userInfo.id);
+  request.user = { username: user.username, name: user.name };
   next();
 };
 
@@ -46,6 +57,7 @@ const errorHandler = (error, request, response, next) => {
 module.exports = {
   requestLogger,
   extractToken,
+  userExtractor,
   unknownEndpoint,
   errorHandler,
 };

@@ -6,7 +6,7 @@ GET http://localhost:3001/api/blogs/2
 ###
 POST http://localhost:3001/api/blogs/
 content-type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Im5ldyBVc2VyIiwiaWQiOiI2OTNhNmY0MWNjZjU0MzYwNDkzYmNiYzIiLCJpYXQiOjE3NjU0MzcyNjB9.7F_87MVgEbykh3dXjF2O2UVffdTgU33WDmuXCNy6LZU
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Im5ldyBVc2VyIiwiaWQiOiI2OTNhNmY0MWNjZjU0MzYwNDkzYmNiYzIiLCJpYXQiOjE3NjU0NTk5NzN9.49uxODi9LKzGbbdB3sX864PkFD8nAIHyV6lWpJtlHk0
 
 {
     "title": "teste, teste, teste",
@@ -27,8 +27,8 @@ content-type: application/json
 }
 
 ###
-DELETE http://localhost:3001/api/blogs/693a789504452c977883c380
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Im5ldyBVc2VyIiwiaWQiOiI2OTNhNmY0MWNjZjU0MzYwNDkzYmNiYzIiLCJpYXQiOjE3NjU0MzcyNjB9.7F_87MVgEbykh3dXjF2O2UVffdTgU33WDmuXCNy6LZU
+DELETE http://localhost:3001/api/blogs/693abce41b78a931cd08b1dd
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Im5ldyBVc2VyIiwiaWQiOiI2OTNhNmY0MWNjZjU0MzYwNDkzYmNiYzIiLCJpYXQiOjE3NjU0NTk5NzN9.49uxODi9LKzGbbdB3sX864PkFD8nAIHyV6lWpJtlHk0
 
 -----------------------------------------------------------------------------------
 
