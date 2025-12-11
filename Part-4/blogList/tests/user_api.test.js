@@ -16,7 +16,7 @@ describe("Check username and password tests", () => {
     const newUser = {
       username: "junim",
       name: "Renilto",
-      password: "haha",
+      password: "1234",
     };
 
     const response = await api
