@@ -42,13 +42,18 @@ blogsRouter.get("/:id", async (req, res, next) => {
 blogsRouter.post("/", async (req, res) => {
   const body = req.body;
 
+  /* Check the validity of the token sent by the request, 
+  it will check the signature with the secret key
+  and return the decoded payload(the original object stored in the token) */
   // const decodedToken = jwt.verify(getTokenFrom(req), process.env.SECRET);
   const decodedToken = jwt.verify(req.token, process.env.SECRET);
 
   if (!decodedToken.id) {
-    return response.status(401).json({ error: "token invalid" });
+    return response.status(401).json({ error: "Invalid token" });
   }
 
+  /* This will search for the user in the DB using the user's id, 
+  that was returned by decodedToken */
   const user = await User.findById(decodedToken.id);
 
   if (!user) {
@@ -103,16 +108,43 @@ blogsRouter.put("/:id", async (req, res) => {
   // .catch((err) => next(err));
 });
 
-blogsRouter.delete("/:id", async (req, res) => {
-  const blog = await Blog.findByIdAndDelete({ _id: req.params.id });
+blogsRouter.delete("/:id", async (req, res, next) => {
+  try {
+    const decodedToken = jwt.verify(req.token, process.env.SECRET);
 
-  res.status(204).json(blog);
+    if (!decodedToken.id) {
+      return res.status(401).json({ error: "Invalid token" });
+    }
 
-  // .then((result) => {
-  //   console.log(result, "Item deleted");
-  //   res.status(200).json(result);
-  // })
-  // .catch((err) => next(err));
+    const blog = await Blog.findById(req.params.id);
+
+    if (!blog) {
+      return res.status(404).json({ error: "Blog not found" });
+    } else if (decodedToken.id !== blog.user.toString()) {
+      return res
+        .status(403)
+        .json({ error: "User not authorized for operation" });
+    }
+
+    /* Specific when client know what they are deleting
+  don't need to return anything, more efficient 
+  cause it's less bandwidth */
+    await Blog.findByIdAndDelete(req.params.id);
+    res.status(204).end();
+  } catch (error) {
+    next(error);
+  }
+
+  /* This is also ok , to use 200 status code
+  and send deleted obj back to the client
+  in case the client wants to check what was deleted */
+  // const deletedBlog = await Blog.findByIdAndDelete(req.params.id);
+  // res.status(200).json(deletedBlog)
+
+  /*  
+  204 + .end()	Client already knows what they deleted
+  200 + .json(obj)	Client needs confirmation of deleted data
+  */
 });
 
 module.exports = blogsRouter;

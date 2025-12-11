@@ -6,7 +6,7 @@ GET http://localhost:3001/api/blogs/2
 ###
 POST http://localhost:3001/api/blogs/
 content-type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Im5ldyBVc2VyIiwiaWQiOiI2OTM5MDAyZjIxNWYwZTk3NGJmOTNjMjQiLCJpYXQiOjE3NjUzODUxMzB9.lM_1lS2-OF34MVhk7F9My5LdrAQkdRqmPfebJ8XA4lM
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Im5ldyBVc2VyIiwiaWQiOiI2OTNhNmY0MWNjZjU0MzYwNDkzYmNiYzIiLCJpYXQiOjE3NjU0MzcyNjB9.7F_87MVgEbykh3dXjF2O2UVffdTgU33WDmuXCNy6LZU
 
 {
     "title": "teste, teste, teste",
@@ -27,7 +27,8 @@ content-type: application/json
 }
 
 ###
-DELETE http://localhost:3001/api/blogs/69390252e19e6648c2368c71
+DELETE http://localhost:3001/api/blogs/693a789504452c977883c380
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Im5ldyBVc2VyIiwiaWQiOiI2OTNhNmY0MWNjZjU0MzYwNDkzYmNiYzIiLCJpYXQiOjE3NjU0MzcyNjB9.7F_87MVgEbykh3dXjF2O2UVffdTgU33WDmuXCNy6LZU
 
 -----------------------------------------------------------------------------------
 
@@ -41,7 +42,7 @@ Content-Type: application/json
 {
     "username": "new User",
     "name": "Renilto",
-    "password": "her"
+    "password": "123"
 }
 
 ###
@@ -55,5 +56,5 @@ Content-Type: application/json
 {
       "username": "new User",
     "name": "Renilto",
-    "password": "her"
+    "password": "123"
 }
