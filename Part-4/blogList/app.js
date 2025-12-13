@@ -22,10 +22,22 @@ mongoose
 app.use(express.json());
 app.use(middleware.requestLogger);
 app.use(middleware.extractToken);
-// app.use(middleware.userExtractor);
+
+/* 
+Middleware for all routes(/blogs, /users, /login)
+We can use the 'userExtractor' middleware 
+for all routes. for example: app.use(middleware.userExtractor); 
+
+Middleare for specific route
+we can apply middleware to all api's from one specific route.
+Ex: app.use("/api/blogs", middleware.userExtractor, blogsRouter); 
+
+Middleware for individual route handlers(.post, .put, .delete)
+Ex: blogsRouter.post("/", userExtractor, async (req, res) => {...}
+Ex: blogsRouter.delete("/", userExtractor, async (req, res) => {...}
+*/
 
 //Routes
-/* User the userExtractor middleware only in the blogs route */
 app.use("/api/blogs", blogsRouter);
 app.use("/api/users", usersRouter);
 app.use("/api/login", loginRouter);

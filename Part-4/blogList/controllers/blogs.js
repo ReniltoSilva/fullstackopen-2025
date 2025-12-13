@@ -43,6 +43,7 @@ blogsRouter.get("/:id", async (req, res, next) => {
 blogsRouter.post("/", userExtractor, async (req, res) => {
   const body = req.body;
   const userInfo = req.user;
+
   /* Check the validity of the token sent by the request, 
   it will check the signature with the secret key
   and return the decoded payload(the original object stored in the token) */
