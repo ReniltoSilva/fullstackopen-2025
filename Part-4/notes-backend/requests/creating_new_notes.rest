@@ -1,9 +1,9 @@
 POST http://localhost:3001/api/notes/
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IkNoYW9saW4iLCJpZCI6IjY5MzU1NmEyYjQxMDZiNWY1NzBmYmNlYyIsImlhdCI6MTc2NTM4MTYyMywiZXhwIjoxNzY1Mzg1MjIzfQ.MQN_7kg8l89y1c2MLgtb-Z3udRGPfRsxWZAreZVYffk
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Im5ldyBVc2VyIiwiaWQiOiI2OTRmYzlkOWJiMmU2NzgxODViZmNlZGYiLCJpYXQiOjE3NjY4MzY3NDMsImV4cCI6MTc2Njg0MDM0M30.FaVxAdgex_RvxIR0MfD_Ro0RCFsoLihEKcNToirVrQ0
 content-type: application/json
 
     {
-        "content": "Note created with no id from the request",
+        "content": "Note created test",
         "important": true
     }
 

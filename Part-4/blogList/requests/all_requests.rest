@@ -6,7 +6,7 @@ GET http://localhost:3001/api/blogs/2
 ###
 POST http://localhost:3001/api/blogs/
 content-type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Im5ldyBVc2VyIiwiaWQiOiI2OTNhNmY0MWNjZjU0MzYwNDkzYmNiYzIiLCJpYXQiOjE3NjU0NTk5NzN9.49uxODi9LKzGbbdB3sX864PkFD8nAIHyV6lWpJtlHk0
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Im5ldyBVc2VyIiwiaWQiOiI2OTRmYzlkOWJiMmU2NzgxODViZmNlZGYiLCJpYXQiOjE3NjY4MzY3NDMsImV4cCI6MTc2Njg0MDM0M30.FaVxAdgex_RvxIR0MfD_Ro0RCFsoLihEKcNToirVrQ0
 
 {
     "title": "teste, teste, teste",
