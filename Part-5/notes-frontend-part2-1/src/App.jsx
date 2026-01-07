@@ -113,7 +113,7 @@ const App = () => {
           <input
             type="text"
             value={username} //What does this do and why?
-            onChange={({ target }) => setUsername(target.value)} //CONTINUE
+            onChange={({ target }) => setUsername(target.value)}
           />
         </label>
       </div>
