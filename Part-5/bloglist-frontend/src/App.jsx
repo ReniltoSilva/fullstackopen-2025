@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import Blog from "./components/Blog";
+import Notification from "./components/Notification";
 import blogService from "./services/blogs";
 import loginService from "./services/login";
 
@@ -12,6 +13,8 @@ const App = () => {
   const [title, setTitle] = useState("");
   const [author, setAuthor] = useState("");
   const [url, setUrl] = useState("");
+
+  const [messageAlert, setMessageAlert] = useState(null);
 
   useEffect(() => {
     const checkUser = JSON.parse(
@@ -35,19 +38,33 @@ const App = () => {
   }, [user]);
 
   const loginHandle = async (e) => {
-    console.log(9);
     e.preventDefault();
-    const user = await loginService({ username, password });
-    window.localStorage.setItem("loggedBlogappUser", JSON.stringify(user));
-    setUser(user);
+
+    try {
+      const user = await loginService({ username, password });
+      if (user) {
+        console.log(user.error, "response from App in frontend");
+      }
+      window.localStorage.setItem("loggedBlogappUser", JSON.stringify(user));
+      setUser(user);
+      setUsername("");
+      setPassword("");
+    } catch (error) {
+      setMessageAlert({
+        message: `${error.response.data.error}`,
+        class: "errorAlertClass",
+      });
+      showNotification();
+    }
   };
 
   const loginForm = () => {
     return (
       <form onSubmit={loginHandle}>
+        {messageAlert === null ? "" : <Notification message={messageAlert} />}
         <div>
           <label>
-            username:
+            Username:
             <input
               type="text"
               onChange={(e) => setUsername(e.target.value)}
@@ -55,7 +72,7 @@ const App = () => {
           </label>
 
           <label>
-            password:
+            Password:
             <input
               type="password"
               onChange={(e) => setPassword(e.target.value)}
@@ -71,14 +88,47 @@ const App = () => {
     window.localStorage.removeItem("loggedBlogappUser");
     setBlogs([]);
     setUser(null);
+    setUsername("");
+    setPassword("");
+  };
+
+  // useEffect(() => {
+  //   if (user == null) {
+  //     return;
+  //   }
+
+  //   setTimeout(() => {
+  //     //CONTINUE  criar um component para mostrar mensagem?
+  //   }, 2000);
+  // }, [blogs]);
+
+  const showNotification = () => {
+    setTimeout(() => {
+      setMessageAlert(null);
+    }, 3000);
   };
 
   const createBlog = async (e) => {
     e.preventDefault();
 
     const response = await blogService.create({ title, author, url });
-    const newBlogs = blogs.concat(response);
-    setBlogs(newBlogs);
+    if (response.status === 201) {
+      const newBlogs = blogs.concat(response.data);
+      setBlogs(newBlogs);
+      // setSuccessAlert("Blog  created");
+      setMessageAlert({
+        message: `Blog ${response.data.title} by ${response.data.author} was successfully created!`,
+        class: "successAlertClass",
+      });
+      showNotification();
+    } else if (response.error) {
+      // setErrorAlert("Blog not created");
+      setMessageAlert({
+        message: "Error: Blog not created",
+        class: "errorAlertClass",
+      });
+      showNotification();
+    }
   };
 
   if (user === null) {
@@ -88,13 +138,14 @@ const App = () => {
   return (
     <div>
       <h2>Blogs</h2>
+      {messageAlert === null ? "" : <Notification message={messageAlert} />}
+
       <div className="userNameContainer">
         <p>{user.name} logged in</p>
         <button onClick={logOut} className="loginBtn">
           Log out
         </button>
       </div>
-
       <form onSubmit={createBlog}>
         <div className="blogInputContainer">
           <label>
@@ -114,7 +165,6 @@ const App = () => {
         </div>
         <button type="submit">Create</button>
       </form>
-
       {blogs.map((blog) => (
         <Blog key={blog.id} blog={blog} />
       ))}

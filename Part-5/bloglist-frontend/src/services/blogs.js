@@ -8,8 +8,8 @@ const setToken = (newToken) => {
 };
 
 const getAll = async () => {
-  const request = await axios.get(baseUrl);
-  return request.data;
+  const response = await axios.get(baseUrl);
+  return response.data;
 };
 
 const create = async (blog) => {
@@ -17,8 +17,13 @@ const create = async (blog) => {
     headers: { Authorization: token },
   };
 
-  const request = await axios.post(baseUrl, blog, config);
-  return request.data;
+  try {
+    const response = await axios.post(baseUrl, blog, config);
+
+    return response;
+  } catch (error) {
+    return { error: "Failed to process request" };
+  }
 };
 
 export default { getAll, create, setToken };
