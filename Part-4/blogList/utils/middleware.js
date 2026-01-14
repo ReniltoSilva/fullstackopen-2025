@@ -2,10 +2,12 @@ const logger = require("./logger");
 const jwt = require("jsonwebtoken");
 const User = require("../models/user");
 
-/* Add token to header before reaching the routes */
+/* Extracts token from authorization property in header,
+then check if token exists and if it starts with 'Bearer',
+if both are tru, removes 'Bearer ' and add token 
+to 'token' property in the header before it reaches the routes */
 const extractToken = (request, response, next) => {
   const authorization = request.get("authorization");
-
   if (authorization && authorization.startsWith("Bearer ")) {
     const token = authorization.replace("Bearer ", "");
     request.token = token;
@@ -13,19 +15,24 @@ const extractToken = (request, response, next) => {
   next();
 };
 
-/* Add user info to header before reaching the routes */
+/* Checks if token is valid, check if user exists in DB 
+then add user info to header before reaching the routes */
 const userExtractor = async (request, response, next) => {
   const userInfo = jwt.verify(request.token, process.env.SECRET);
+  /*Should it be some validation check here for userInfo? 
+  to check if verification went ok? and then proceed with the rest of the code?*/
   const user = await User.findById(userInfo.id);
-  request.user = { username: user.username, name: user.name };
+
+  request.user = { username: user.username, name: user.name, id: userInfo.id };
   next();
 };
 
 const requestLogger = (request, response, next) => {
+  logger.info("|----Middleware requestLogger----|");
   logger.info("Method:", request.method);
   logger.info("Path:  ", request.path);
   logger.info("Body:  ", request.body);
-  logger.info("---");
+  logger.info("|----Middleware requestLogger----|");
   next();
 };
 

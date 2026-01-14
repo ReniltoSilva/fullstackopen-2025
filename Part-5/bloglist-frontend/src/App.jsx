@@ -1,6 +1,9 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import Blog from "./components/Blog";
+import Toggable from "./components/Toggable";
+import BlogForm from "./components/BlogForm";
 import Notification from "./components/Notification";
+
 import blogService from "./services/blogs";
 import loginService from "./services/login";
 
@@ -9,12 +12,9 @@ const App = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [user, setUser] = useState(null);
-
-  const [title, setTitle] = useState("");
-  const [author, setAuthor] = useState("");
-  const [url, setUrl] = useState("");
-
   const [messageAlert, setMessageAlert] = useState(null);
+
+  const blogFormRef = useRef();
 
   useEffect(() => {
     const checkUser = JSON.parse(
@@ -42,19 +42,31 @@ const App = () => {
 
     try {
       const user = await loginService({ username, password });
-      if (user) {
-        console.log(user.error, "response from App in frontend");
-      }
+
       window.localStorage.setItem("loggedBlogappUser", JSON.stringify(user));
       setUser(user);
       setUsername("");
       setPassword("");
     } catch (error) {
-      setMessageAlert({
-        message: `${error.response.data.error}`,
-        class: "errorAlertClass",
-      });
-      showNotification();
+      if (error.response) {
+        setMessageAlert({
+          message: `${error.response.data.error || "Login failed"}`,
+          class: "errorAlertClass",
+        });
+        hideNotification();
+      } else if (error.request) {
+        setMessageAlert({
+          message: "No response from server",
+          class: "errorAlertClass",
+        });
+        hideNotification();
+      } else {
+        setMessageAlert({
+          message: "An error occured",
+          class: "errorAlertClass",
+        });
+        hideNotification();
+      }
     }
   };
 
@@ -92,42 +104,32 @@ const App = () => {
     setPassword("");
   };
 
-  // useEffect(() => {
-  //   if (user == null) {
-  //     return;
-  //   }
-
-  //   setTimeout(() => {
-  //     //CONTINUE  criar um component para mostrar mensagem?
-  //   }, 2000);
-  // }, [blogs]);
-
-  const showNotification = () => {
+  const hideNotification = () => {
     setTimeout(() => {
       setMessageAlert(null);
     }, 3000);
   };
 
-  const createBlog = async (e) => {
-    e.preventDefault();
+  const createBlog = async ({ author, title, url }) => {
+    blogFormRef.current.toggleVisibility();
+    // const response = await blogService.create({ title, author, url });
+    const response = await blogService.create({ author, title, url });
 
-    const response = await blogService.create({ title, author, url });
     if (response.status === 201) {
       const newBlogs = blogs.concat(response.data);
       setBlogs(newBlogs);
-      // setSuccessAlert("Blog  created");
       setMessageAlert({
         message: `Blog ${response.data.title} by ${response.data.author} was successfully created!`,
         class: "successAlertClass",
       });
-      showNotification();
+
+      hideNotification();
     } else if (response.error) {
-      // setErrorAlert("Blog not created");
       setMessageAlert({
-        message: "Error: Blog not created",
+        message: response.error,
         class: "errorAlertClass",
       });
-      showNotification();
+      hideNotification();
     }
   };
 
@@ -146,25 +148,11 @@ const App = () => {
           Log out
         </button>
       </div>
-      <form onSubmit={createBlog}>
-        <div className="blogInputContainer">
-          <label>
-            Title:
-            <input type="text" onChange={(e) => setTitle(e.target.value)} />
-          </label>
 
-          <label>
-            Author:
-            <input type="text" onChange={(e) => setAuthor(e.target.value)} />
-          </label>
+      <Toggable ref={blogFormRef}>
+        <BlogForm handleChange={createBlog} />
+      </Toggable>
 
-          <label>
-            Url:
-            <input type="text" onChange={(e) => setUrl(e.target.value)} />
-          </label>
-        </div>
-        <button type="submit">Create</button>
-      </form>
       {blogs.map((blog) => (
         <Blog key={blog.id} blog={blog} />
       ))}

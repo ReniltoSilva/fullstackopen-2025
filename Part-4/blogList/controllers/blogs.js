@@ -41,24 +41,33 @@ blogsRouter.get("/:id", async (req, res, next) => {
 });
 
 blogsRouter.post("/", userExtractor, async (req, res) => {
-  const body = req.body;
   const userInfo = req.user;
+  const body = req.body;
 
   /* Check the validity of the token sent by the request, 
   it will check the signature with the secret key
   and return the decoded payload(the original object stored in the token) */
   // const decodedToken = jwt.verify(getTokenFrom(req), process.env.SECRET);
-  const decodedToken = jwt.verify(req.token, process.env.SECRET);
+  // const decodedToken = jwt.verify(req.token, process.env.SECRET);
+  /*Why is this being verified here again 
+  if it was already verified inside the userExtractor middleware?*/
 
-  if (!decodedToken.id) {
+  if (!userInfo.id) {
     return response.status(401).json({ error: "Invalid token" });
   }
 
   /* This will search for the user in the DB using the user's id, 
   that was returned by decodedToken */
-  const user = await User.findById(decodedToken.id);
+  const user = await User.findById(userInfo.id);
+  /*THis is also done by the middleware userExtractor, am I repeating things here?
+  I feel like 'decodedToken' and 'this findById should have been perfomed by the middle ware?
+  and then returned only the result here?'*/
 
-  if (!user) {
+  // if (!user) {
+  //   return res.status(400).json({ error: "userId missing or not valid" });
+  // }
+
+  if (!userInfo) {
     return res.status(400).json({ error: "userId missing or not valid" });
   }
 
@@ -130,7 +139,7 @@ blogsRouter.delete("/:id", userExtractor, async (req, res, next) => {
         .json({ error: "User not authorized for operation" });
     }
 
-    /* Specific when client know what they are deleting
+    /* Specific when client knows what they are deleting
   don't need to return anything, more efficient
   cause it's less bandwidth */
     await Blog.findByIdAndDelete(req.params.id);

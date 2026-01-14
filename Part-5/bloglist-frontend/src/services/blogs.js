@@ -8,8 +8,12 @@ const setToken = (newToken) => {
 };
 
 const getAll = async () => {
-  const response = await axios.get(baseUrl);
-  return response.data;
+  try {
+    const response = await axios.get(baseUrl);
+    return response.data;
+  } catch (error) {
+    return { error: "Error when retrieving notes!" };
+  }
 };
 
 const create = async (blog) => {
@@ -19,10 +23,9 @@ const create = async (blog) => {
 
   try {
     const response = await axios.post(baseUrl, blog, config);
-
     return response;
   } catch (error) {
-    return { error: "Failed to process request" };
+    return { error: `${error.response.data.error}` };
   }
 };
 
