@@ -1,5 +1,4 @@
-import { forwardRef } from "react";
-import { useState, useImperativeHandle } from "react";
+import { useState, useImperativeHandle, forwardRef } from "react";
 
 const Toggable = forwardRef((props, ref) => {
   const [visible, setVisible] = useState(false);
@@ -17,15 +16,13 @@ const Toggable = forwardRef((props, ref) => {
 
   return (
     <div>
-      <div>
-        <div>{visible ? props.children : null}</div>
-        <button onClick={toggleVisibility} style={showButtonCancel}>
-          Cancel
-        </button>
+      <div style={showButtonCancel}>
+        {visible ? props.children : null}
+        <button onClick={toggleVisibility}>Cancel</button>
       </div>
 
       <button onClick={toggleVisibility} style={hideButtonCreate}>
-        Create new blog
+        {props.btnName}
       </button>
     </div>
   );

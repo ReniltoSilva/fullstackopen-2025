@@ -10,6 +10,7 @@ const setToken = (newToken) => {
 const getAll = async () => {
   try {
     const response = await axios.get(baseUrl);
+
     return response.data;
   } catch (error) {
     return { error: "Error when retrieving notes!" };
