@@ -100,6 +100,8 @@ blogsRouter.post("/", userExtractor, async (req, res) => {
 
 blogsRouter.put("/:id", async (req, res) => {
   const body = req.body;
+  /* By default, 'findByIdAndUpdate' doesn't return the new updated item,
+  you must add {new: true} in the options object */
   const blog = await Blog.findByIdAndUpdate(
     { _id: req.params.id },
     {
@@ -107,9 +109,10 @@ blogsRouter.put("/:id", async (req, res) => {
       author: body.author,
       url: body.url,
       likes: body.likes,
-    }
+    },
+    { new: true }
   );
-  console.log(blog, "Item updated in blog list");
+  // console.log("Item updated in blog list", blog);
   res.status(200).json(blog);
 
   // .then((result) => {

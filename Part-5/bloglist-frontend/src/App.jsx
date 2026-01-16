@@ -130,7 +130,7 @@ function App() {
       </Toggable>
 
       {blogs.map((blog) => (
-        <Blog key={blog.id} blog={blog} />
+        <Blog key={blog.id} blog={blog} /> //CONTINUE - This is rendering Blog component for each blog in storage
       ))}
     </div>
   );
