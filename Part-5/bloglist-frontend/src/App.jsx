@@ -129,9 +129,11 @@ function App() {
         <BlogForm handleChange={createBlog} />
       </Toggable>
 
-      {blogs.map((blog) => (
-        <Blog key={blog.id} blog={blog} /> //CONTINUE - This is rendering Blog component for each blog in storage
-      ))}
+      {blogs
+        .map((blog) => (
+          <Blog key={blog.id} blog={blog} /> //CONTINUE - This is rendering Blog component for each blog in storage
+        ))
+        .sort((a, b) => a.props.blog.likes - b.props.blog.likes)}
     </div>
   );
 }
