@@ -1,12 +1,11 @@
 import { useState, useEffect } from "react";
 import services from "../services/blogs";
-import blogs from "../services/blogs";
 
-const Blog = ({ blog }) => {
+const Blog = ({ blog, deleteBlog }) => {
   const [viewBlog, setviewBlog] = useState(false);
   const [currentLikeCount, setCurrentLikeCount] = useState(blog.likes);
 
-  const increaseyOneUpdateServer = async () => {
+  const increaseOneUpdateServer = async () => {
     const newBlogCount = {
       title: blog.title,
       id: blog.id,
@@ -15,8 +14,14 @@ const Blog = ({ blog }) => {
       likes: currentLikeCount + 1,
     };
 
+    /* Should I also add the backend logic 
+    in 'increaseyOneUpdateServer' to the App component as well or leave it here? */
     const response = await services.updateLike(newBlogCount);
     setCurrentLikeCount(response.likes);
+  };
+
+  const returnDeleteBlog = async () => {
+    deleteBlog(blog);
   };
 
   return (
@@ -27,20 +32,29 @@ const Blog = ({ blog }) => {
         padding: "3px",
       }}
     >
-      <p style={{ fontWeight: "bold" }}>{blog.title}</p>
-      <div style={{ display: viewBlog ? "" : "none" }}>
-        <p style={{ margin: "0px" }}>{blog.author}</p>
-        <p style={{ margin: "0px" }}>{blog.url}</p>
-        <div>
-          {currentLikeCount}{" "}
+      <div className="blogContainerDiv">
+        <p style={{ fontWeight: "bold" }}>Title: {blog.title}</p>
+        <div style={{ display: viewBlog ? "" : "none" }}>
+          <p style={{ margin: "0px" }}>Url: {blog.url}</p>
+          <p style={{ margin: "0px" }}>Author: {blog.author}</p>
+          <div>
+            Likes: {currentLikeCount}{" "}
+            <button
+              style={{ padding: "1px 5px" }}
+              onClick={increaseOneUpdateServer}
+            >
+              like
+            </button>
+          </div>
           <button
-            style={{ padding: "1px 5px" }}
-            onClick={increaseyOneUpdateServer}
+            style={{ backgroundColor: "#cc5050" }}
+            onClick={returnDeleteBlog}
           >
-            like
+            Delete
           </button>
         </div>
       </div>
+
       <button onClick={(e) => setviewBlog(!viewBlog)}>
         {viewBlog ? "Hide" : "View"}
       </button>

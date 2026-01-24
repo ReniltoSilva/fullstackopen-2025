@@ -12,15 +12,15 @@ import loginService from "./services/login";
 /* Components can also be declared like this -
 const App = () => {...} like writing a function */
 function App() {
-  const [blogs, setBlogs] = useState([]);
   const [user, setUser] = useState(null);
+  const [blogs, setBlogs] = useState([]);
   const [messageAlert, setMessageAlert] = useState(null);
 
   const blogFormRef = useRef();
 
   useEffect(() => {
     const checkUser = JSON.parse(
-      window.localStorage.getItem("loggedBlogappUser")
+      window.localStorage.getItem("loggedBlogappUser"),
     );
     if (checkUser) {
       setUser(checkUser);
@@ -109,6 +109,28 @@ function App() {
     }
   };
 
+  const deleteBlog = async (blog) => {
+    if (confirm(`Delete ${blog.title}?`)) {
+      const response = await blogService.deleteBlog(blog.id);
+
+      if (response.status === 204) {
+        setBlogs(blogs.filter((b) => blog.id !== b.id));
+        setMessageAlert({
+          message: `${blog.title} deleted successfully!`,
+          class: "successAlertClass",
+        });
+        hideNotification();
+      } else {
+        alert("An error occurred!");
+        setMessageAlert({
+          message: `An error occurred`,
+          class: "errorAlertClass",
+        });
+        hideNotification();
+      }
+    }
+  };
+
   if (user === null) {
     return loginForm();
   }
@@ -131,7 +153,7 @@ function App() {
 
       {blogs
         .map((blog) => (
-          <Blog key={blog.id} blog={blog} /> //CONTINUE - This is rendering Blog component for each blog in storage
+          <Blog key={blog.id} blog={blog} deleteBlog={deleteBlog} />
         ))
         .sort((a, b) => a.props.blog.likes - b.props.blog.likes)}
     </div>
