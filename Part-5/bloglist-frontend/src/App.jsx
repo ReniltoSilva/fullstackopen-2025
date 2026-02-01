@@ -131,6 +131,35 @@ function App() {
     }
   };
 
+  const increaseLikeCount = async (blog) => {
+    const newBlogCount = {
+      title: blog.title,
+      id: blog.id,
+      author: blog.author,
+      url: blog.url,
+      likes: blog.likes + 1,
+    };
+
+    const response = await blogService.updateLike(newBlogCount);
+
+    // const blogToReplace = blogs.find((item) => item.id === response.id);
+    // blogToReplace.likes = response.likes;
+
+    // const newBlogsArr = blogs.map((item) => {
+    //   if (item.id === blogToReplace.id) {
+    //     return blogToReplace;
+    //   } else {
+    //     return item;
+    //   }
+    // });
+
+    const newBlogsArr = blogs.map((b) =>
+      b.id !== blog.id ? b : { ...b, likes: response.likes },
+    );
+
+    setBlogs(newBlogsArr);
+  };
+
   if (user === null) {
     return loginForm();
   }
@@ -153,7 +182,12 @@ function App() {
 
       {blogs
         .map((blog) => (
-          <Blog key={blog.id} blog={blog} deleteBlog={deleteBlog} />
+          <Blog
+            key={blog.id}
+            blog={blog}
+            deleteBlog={deleteBlog}
+            increaseLikeCount={increaseLikeCount}
+          />
         ))
         .sort((a, b) => a.props.blog.likes - b.props.blog.likes)}
     </div>

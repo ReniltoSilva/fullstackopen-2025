@@ -13,7 +13,7 @@ const getAll = async () => {
 
     return response.data;
   } catch (error) {
-    return { error: "Error when retrieving notes!" };
+    return { error: "Error when retrieving blog!" };
   }
 };
 
@@ -27,6 +27,15 @@ const create = async (blog) => {
     return response;
   } catch (error) {
     return { error: `${error.response.data.error}` };
+  }
+};
+
+const getOne = async (blog) => {
+  try {
+    const response = await axios.get(`${baseUrl}/${blog.id}`);
+    return response.data;
+  } catch (error) {
+    return { error: "Error and retrieving blog!" };
   }
 };
 
@@ -48,4 +57,4 @@ const deleteBlog = async (blogId) => {
   return response;
 };
 
-export default { getAll, create, updateLike, setToken, deleteBlog };
+export default { getAll, create, updateLike, setToken, deleteBlog, getOne };

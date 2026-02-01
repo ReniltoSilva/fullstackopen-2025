@@ -1,23 +1,25 @@
 import { useState, useEffect } from "react";
 import services from "../services/blogs";
 
-const Blog = ({ blog, deleteBlog }) => {
+const Blog = ({ blog, deleteBlog, increaseLikeCount, currentLikeCount }) => {
   const [viewBlog, setviewBlog] = useState(false);
-  const [currentLikeCount, setCurrentLikeCount] = useState(blog.likes);
+  // const [currentLikeCount, setCurrentLikeCount] = useState(blog.likes);
 
-  const increaseOneUpdateServer = async () => {
-    const newBlogCount = {
-      title: blog.title,
-      id: blog.id,
-      author: blog.author,
-      url: blog.url,
-      likes: currentLikeCount + 1,
-    };
+  // const increaseOneUpdateServer = async () => {
+  //   const newBlogCount = {
+  //     title: blog.title,
+  //     id: blog.id,
+  //     author: blog.author,
+  //     url: blog.url,
+  //     likes: currentLikeCount + 1,
+  //   };
 
-    /* Should I also add the backend logic 
-    in 'increaseyOneUpdateServer' to the App component as well or leave it here? */
-    const response = await services.updateLike(newBlogCount);
-    setCurrentLikeCount(response.likes);
+  //   const response = await services.updateLike(newBlogCount);
+  //   setCurrentLikeCount(response.likes);
+  // };
+  // console.log("From Blog", blog.likes);
+  const returnLikesCount = async () => {
+    increaseLikeCount(blog);
   };
 
   const returnDeleteBlog = async () => {
@@ -38,11 +40,8 @@ const Blog = ({ blog, deleteBlog }) => {
         <div style={{ display: viewBlog ? "" : "none" }}>
           <p style={{ margin: "0px" }}>Url: {blog.url}</p>
           <div>
-            Likes: {currentLikeCount}{" "}
-            <button
-              style={{ padding: "1px 5px" }}
-              onClick={increaseOneUpdateServer}
-            >
+            Likes: {blog.likes}{" "}
+            <button style={{ padding: "1px 5px" }} onClick={returnLikesCount}>
               like
             </button>
           </div>

@@ -5,8 +5,10 @@ import { beforeEach, expect, vi } from "vitest";
 import Blog from "./Blog";
 
 describe("<Blog/>", () => {
+  const mockHandler = vi.fn();
+
   beforeEach(() => {
-    render(<Blog blog={blog} />);
+    render(<Blog blog={blog} increaseLikeCount={mockHandler} />);
   });
 
   const blog = {
@@ -41,5 +43,21 @@ describe("<Blog/>", () => {
 
     const likes = screen.getByText("Url: www.com");
     expect(likes).toBeVisible();
+  });
+
+  test("Like button is clicked twice, event handler is called twice", async () => {
+    //Click 'view' button
+    const user = userEvent.setup();
+    const viewButton = screen.getByText("View");
+    await user.click(viewButton);
+
+    //Click 'like' button
+    const likeButton = screen.getByText("like");
+    await user.click(likeButton);
+    await user.click(likeButton);
+
+    expect(mockHandler.mock.calls).toHaveLength(2);
+    expect(mockHandler).toHaveBeenCalledTimes(2);
+    console.log(mockHandler.mock.calls.length);
   });
 });
