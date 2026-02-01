@@ -21,6 +21,7 @@ const BlogForm = ({ handleChange }) => {
           <label>
             Title:
             <input
+              name="title"
               type="text"
               value={
                 title
@@ -32,6 +33,7 @@ const BlogForm = ({ handleChange }) => {
           <label>
             Author:
             <input
+              name="author"
               type="text"
               value={author}
               onChange={(e) => setAuthor(e.target.value)}
@@ -41,6 +43,7 @@ const BlogForm = ({ handleChange }) => {
           <label>
             Url:
             <input
+              name="url"
               type="text"
               value={url}
               onChange={(e) => setUrl(e.target.value)}

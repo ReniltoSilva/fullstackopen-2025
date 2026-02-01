@@ -155,7 +155,7 @@ function App() {
 
     const newBlogsArr = blogs.map((b) =>
       b.id !== blog.id ? b : { ...b, likes: response.likes },
-    );
+    ); /* I want to understand this -> { ...b, likes: response.likes } */
 
     setBlogs(newBlogsArr);
   };

@@ -1,4 +1,4 @@
-import { getByText, render, screen } from "@testing-library/react";
+import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { beforeEach, expect, vi } from "vitest";
 
@@ -58,6 +58,6 @@ describe("<Blog/>", () => {
 
     expect(mockHandler.mock.calls).toHaveLength(2);
     expect(mockHandler).toHaveBeenCalledTimes(2);
-    console.log(mockHandler.mock.calls.length);
+    // console.log(mockHandler.mock.calls.length);
   });
 });
