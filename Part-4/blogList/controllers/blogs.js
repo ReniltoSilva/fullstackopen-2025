@@ -14,6 +14,8 @@ const { userExtractor } = require("../utils/middleware");
 // };
 
 blogsRouter.get("/", async (req, res) => {
+  console.log("6 - FROM GET REQUEST");
+
   const blogs = await Blog.find({}).populate("user", {
     username: 1,
     name: 1,
@@ -44,6 +46,8 @@ blogsRouter.post("/", userExtractor, async (req, res) => {
   const userInfo = req.user;
   const body = req.body;
 
+  console.log("1 - FROM POST REQUEST");
+
   /* Check the validity of the token sent by the request, 
   it will check the signature with the secret key
   and return the decoded payload(the original object stored in the token) */
@@ -51,7 +55,6 @@ blogsRouter.post("/", userExtractor, async (req, res) => {
   // const decodedToken = jwt.verify(req.token, process.env.SECRET);
   /*Why is this being verified here again 
   if it was already verified inside the userExtractor middleware?*/
-
   if (!userInfo.id) {
     return response.status(401).json({ error: "Invalid token" });
   }
@@ -100,6 +103,9 @@ blogsRouter.post("/", userExtractor, async (req, res) => {
 
 blogsRouter.put("/:id", async (req, res) => {
   const body = req.body;
+
+  console.log("7 - FROM PUT REQUEST");
+
   /* By default, 'findByIdAndUpdate' doesn't return the new updated item,
   you must add {new: true} in the options object */
   const blog = await Blog.findByIdAndUpdate(
@@ -110,7 +116,7 @@ blogsRouter.put("/:id", async (req, res) => {
       url: body.url,
       likes: body.likes,
     },
-    { new: true }
+    { new: true },
   );
   // console.log("Item updated in blog list", blog);
   res.status(200).json(blog);

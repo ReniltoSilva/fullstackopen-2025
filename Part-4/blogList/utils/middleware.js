@@ -8,6 +8,9 @@ if both are tru, removes 'Bearer ' and add token
 to 'token' property in the header before it reaches the routes */
 const extractToken = (request, response, next) => {
   const authorization = request.get("authorization");
+
+  console.log("3 - FROM EXTRACTTOKEN");
+
   if (authorization && authorization.startsWith("Bearer ")) {
     const token = authorization.replace("Bearer ", "");
     request.token = token;
@@ -18,6 +21,8 @@ const extractToken = (request, response, next) => {
 /* Checks if token is valid, check if user exists in DB 
 then add user info to header before reaching the routes */
 const userExtractor = async (request, response, next) => {
+  console.log("2 - FROM USEREXTRACTOR");
+
   const userInfo = jwt.verify(request.token, process.env.SECRET);
   /*Should it be some validation check here for userInfo? 
   to check if verification went ok? and then proceed with the rest of the code?*/
@@ -28,6 +33,8 @@ const userExtractor = async (request, response, next) => {
 };
 
 const requestLogger = (request, response, next) => {
+  console.log("4 - FROM requestlogger");
+
   logger.info("|----Middleware requestLogger----|");
   logger.info("Method:", request.method);
   logger.info("Path:  ", request.path);

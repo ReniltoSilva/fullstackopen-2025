@@ -1,8 +1,10 @@
 const express = require("express");
 const mongoose = require("mongoose");
+
 const config = require("./utils/config");
 const logger = require("./utils/logger");
 const middleware = require("./utils/middleware");
+
 const blogsRouter = require("./controllers/blogs");
 const usersRouter = require("./controllers/users");
 const loginRouter = require("./controllers/login");
@@ -19,9 +21,10 @@ mongoose
   .catch((err) => logger.error("Error connecting to MongoDB", err.message));
 
 //Middleware
+console.log("5 - FROM APP.JS");
 app.use(express.json());
-app.use(middleware.requestLogger);
 app.use(middleware.extractToken);
+app.use(middleware.requestLogger);
 
 /* 
 Middleware for all routes(/blogs, /users, /login)

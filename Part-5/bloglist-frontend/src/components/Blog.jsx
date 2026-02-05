@@ -35,7 +35,9 @@ const Blog = ({ blog, deleteBlog, increaseLikeCount, currentLikeCount }) => {
       }}
     >
       <div className="blogContainerDiv">
-        <p style={{ fontWeight: "bold" }}>Title: {blog.title}</p>
+        <p className="blogTitle" style={{ fontWeight: "bold" }}>
+          Title: {blog.title}
+        </p>
         <p style={{ margin: "0px" }}>Author: {blog.author}</p>
         <div style={{ display: viewBlog ? "" : "none" }}>
           <p style={{ margin: "0px" }}>Url: {blog.url}</p>

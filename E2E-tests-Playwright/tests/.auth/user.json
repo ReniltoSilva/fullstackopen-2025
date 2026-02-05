@@ -1,0 +1,14 @@
+{
+  "cookies": [],
+  "origins": [
+    {
+      "origin": "http://localhost:5173",
+      "localStorage": [
+        {
+          "name": "loggedBlogappUser",
+          "value": "{\"token\":\"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Im5ldyBVc2VyIiwiaWQiOiI2OTg0NTFjZTdhZWQ5MDU0NzFlM2MyZDEiLCJpYXQiOjE3NzAzMDUwMjR9.7LoigKS1nyLGwUSNG868nx5l4ODvl60JfqyactrUuxY\",\"username\":\"new User\",\"name\":\"Junior\"}"
+        }
+      ]
+    }
+  ]
+}

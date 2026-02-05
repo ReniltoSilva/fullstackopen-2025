@@ -13,6 +13,7 @@ const { Router } = require("express");
 //Helper function - isolates the token from the authorization header
 const getTokenFrom = (request) => {
   const authorization = request.get("authorization");
+  console.log(authorization);
   if (authorization && authorization.startsWith("Bearer ")) {
     return authorization.replace("Bearer ", "");
   }

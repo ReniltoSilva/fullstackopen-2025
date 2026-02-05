@@ -9,7 +9,6 @@ const middleware = require("./utils/middleware");
 const notesRouter = require("./controllers/notes");
 const usersRouter = require("./controllers/users");
 const loginRouter = require("./controllers/login");
-const router = require("./controllers/testing");
 
 const app = express();
 
@@ -23,8 +22,8 @@ mongoose
   .catch((err) => logger.error("Error connecting to MongoDB:", err.message));
 
 //Middleware
-app.use(express.static("dist"));
 app.use(express.json());
+app.use(express.static("dist"));
 app.use(middleware.requestLogger);
 
 //Routes

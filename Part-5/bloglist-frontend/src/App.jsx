@@ -40,7 +40,11 @@ function App() {
   const loginHandle = async (credentials) => {
     try {
       const user = await loginService(credentials);
-
+      /* The test to create notes in Playwright works because we are not storing
+      the token in localStorage, in the blogs project we are saving it to LS.
+      The notes project work because we send the create note request 
+      along with the token everytime */
+      console.log(user, "USER FROM FRONTEND");
       window.localStorage.setItem("loggedBlogappUser", JSON.stringify(user));
       setUser(user);
     } catch (error) {

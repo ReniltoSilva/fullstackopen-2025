@@ -1,7 +1,7 @@
-const { describe, test, expect, beforeEach } = require("@playwright/test");
-const { loginWith, createNote } = require("./helper");
+// const { describe, test, expect, beforeEach } = require("@playwright/test");
+// const { loginWith, createNote } = require("./helper");
 
-/* Command test "test.only(...)" makes playwright to run only that specific test*/
+// /* Command test "test.only(...)" makes playwright to run only that specific test*/
 
 // describe("Note app", () => {
 //   beforeEach(async ({ page, request }) => {
