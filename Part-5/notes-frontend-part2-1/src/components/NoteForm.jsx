@@ -44,7 +44,7 @@ const NoteForm = ({ createNote }) => {
         <button type="submit">save</button>
 
         {/* input field example for test*/}
-        <input value={newNote} />
+        {/* <input value={newNote} /> */}
       </form>
     </div>
   );
