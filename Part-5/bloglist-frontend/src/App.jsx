@@ -44,7 +44,6 @@ function App() {
       the token in localStorage, in the blogs project we are saving it to LS.
       The notes project work because we send the create note request 
       along with the token everytime */
-      console.log(user, "USER FROM FRONTEND");
       window.localStorage.setItem("loggedBlogappUser", JSON.stringify(user));
       setUser(user);
     } catch (error) {
@@ -191,6 +190,7 @@ function App() {
             blog={blog}
             deleteBlog={deleteBlog}
             increaseLikeCount={increaseLikeCount}
+            currentUser={user}
           />
         ))
         .sort((a, b) => a.props.blog.likes - b.props.blog.likes)}

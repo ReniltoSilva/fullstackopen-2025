@@ -6,7 +6,7 @@
       "localStorage": [
         {
           "name": "loggedBlogappUser",
-          "value": "{\"token\":\"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Im5ldyBVc2VyIiwiaWQiOiI2OTg0NTFjZTdhZWQ5MDU0NzFlM2MyZDEiLCJpYXQiOjE3NzAzNTYwNDB9.LPvu_7RR17fEmZlL4dZ81wrtbv-_Tzmqk-kHLjFDEug\",\"username\":\"new User\",\"name\":\"Junior\"}"
+          "value": "{\"token\":\"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InVzZXJCIiwiaWQiOiI2OTg1ODVhODkyYTk4Yjg2M2NiZjRkY2YiLCJpYXQiOjE3NzAzNTkyNDd9.KAgBO2ic1cNtxbl4GhgMDh-cTgECzyvl75Ru15o9tks\",\"username\":\"userB\",\"name\":\"User B\"}"
         }
       ]
     }

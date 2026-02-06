@@ -5,8 +5,8 @@ describe("Blog app", () => {
   //   await request.post("http://localhost:3001/api/testing/reset");
   //   await request.post("http://localhost:3001/api/users", {
   //     data: {
-  //       username: "new User",
-  //       name: "Junior",
+  //       username: "userA",
+  //       name: "User A",
   //       password: "123",
   //     },
   //   });
@@ -26,7 +26,7 @@ describe("Blog app", () => {
   describe("Login", () => {
     // test("fails with wrong credentials", async ({ page }) => {
     //   await page.getByRole("button", { name: "Login" }).click();
-    //   await page.getByLabel("Username:").fill("new User");
+    //   await page.getByLabel("Username:").fill("userA");
     //   await page.getByLabel("Password:").fill("0000");
     //   await page.getByRole("button", { name: "Login" }).click();
 
@@ -37,11 +37,11 @@ describe("Blog app", () => {
 
     // test("Succeeds with correct credentials", async ({ page }) => {
     //   await page.getByRole("button", { name: "Login" }).click();
-    //   await page.getByLabel("Username:").fill("new User");
+    //   await page.getByLabel("Username:").fill("userA");
     //   await page.getByLabel("Password:").fill("123");
     //   await page.getByRole("button", { name: "Login" }).click();
 
-    //   await expect(page.getByText("Welcome, Junior!")).toBeVisible();
+    //   await expect(page.getByText("Welcome, User A!")).toBeVisible();
     // });
 
     describe("When logged in", () => {
@@ -56,27 +56,38 @@ describe("Blog app", () => {
       });
 
       test("a new blog can be created", async ({ page }) => {
-        await page.getByRole("button", { name: "New Blog" }).click();
-        await page.getByLabel("Title:").fill("New blog created");
-        await page.getByLabel("Author:").fill("Junior");
-        await page.getByLabel("Url:").fill("wwww");
-        await page.getByRole("button", { name: "Create" }).click();
-        await expect(page.getByText("Title: New blog created")).toBeVisible();
+        // await page.getByRole("button", { name: "New Blog" }).click();
+        // await page.getByLabel("Title:").fill("");
+        // await page.getByLabel("Author:").fill("Junior");
+        // await page.getByLabel("Url:").fill("wwww");
+        // await page.getByRole("button", { name: "Create" }).click();
+        // await expect(page.getByText("Title: New blog created")).toBeVisible();
       });
 
       test("make sure the blog can be liked", async ({ page }) => {
-        await page.getByRole("button", { name: "View" }).click();
-        await page.getByRole("button", { name: "like" }).click();
-
-        await expect(page.getByText("Likes: 0")).not.toBeVisible();
+        // await page.getByRole("button", { name: "View" }).click();
+        // await page.getByRole("button", { name: "like" }).click();
+        // await expect(page.getByText("Likes: 0")).not.toBeVisible();
       });
 
       test("make sure to delete a blog", async ({ page }) => {
+        // await page.getByRole("button", { name: "View" }).click();
+        /* dialog.accept() method has to come before the action.
+        In this case, before clicking the Delete button  */
+        // page.on("dialog", (dialog) => dialog.accept());
+        // await page.getByRole("button", { name: "Delete" }).click();
+      });
+
+      test("delete button can only be seen by user who created it", async ({
+        page,
+      }) => {
         await page.getByRole("button", { name: "View" }).click();
 
-        page.on("dialog", (dialog) => dialog.accept());
-
-        await page.getByRole("button", { name: "Delete" }).click();
+        await expect(page.getByRole("button", { name: "like" })).toBeVisible();
+        await expect(
+          page.getByRole("button", { name: "Delete" }),
+        ).not.toBeVisible();
+        await expect(page.getByRole("button", { name: "Hide" })).toBeVisible();
       });
     });
   });

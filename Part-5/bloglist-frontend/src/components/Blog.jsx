@@ -1,7 +1,13 @@
 import { useState, useEffect } from "react";
 import services from "../services/blogs";
 
-const Blog = ({ blog, deleteBlog, increaseLikeCount, currentLikeCount }) => {
+const Blog = ({
+  blog,
+  currentUser,
+  deleteBlog,
+  increaseLikeCount,
+  currentLikeCount,
+}) => {
   const [viewBlog, setviewBlog] = useState(false);
   // const [currentLikeCount, setCurrentLikeCount] = useState(blog.likes);
 
@@ -47,12 +53,14 @@ const Blog = ({ blog, deleteBlog, increaseLikeCount, currentLikeCount }) => {
               like
             </button>
           </div>
-          <button
-            style={{ backgroundColor: "#cc5050" }}
-            onClick={returnDeleteBlog}
-          >
-            Delete
-          </button>
+          {blog.user.username === currentUser.username ? (
+            <button
+              style={{ backgroundColor: "#cc5050" }}
+              onClick={returnDeleteBlog}
+            >
+              Delete
+            </button>
+          ) : null}
         </div>
       </div>
 

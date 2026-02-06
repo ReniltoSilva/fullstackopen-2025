@@ -5,10 +5,19 @@ const authFile = path.join(__dirname, "./.auth/user.json");
 
 setup("authenticate", async ({ page, request }) => {
   // Perform authentication steps. Replace these actions with your own.
+  await request.post("http://localhost:3001/api/testing/reset");
+  await request.post("http://localhost:3001/api/users", {
+    data: {
+      username: "userB",
+      name: "User B",
+      password: "123",
+    },
+  });
+
   await page.goto("http://localhost:5173");
 
   await page.getByRole("button", { name: "Login" }).click();
-  await page.getByLabel("Username:").fill("new User");
+  await page.getByLabel("Username:").fill("userB");
   await page.getByLabel("Password:").fill("123");
   await page.getByRole("button", { name: "Login" }).click();
 
@@ -19,7 +28,7 @@ setup("authenticate", async ({ page, request }) => {
   //   await page.waitForURL("https://github.com/");
 
   // Alternatively, you can wait until the page reaches a state where all cookies are set.
-  await expect(page.getByText("Welcome, Junior!")).toBeVisible();
+  await expect(page.getByText("Welcome, User B!")).toBeVisible();
 
   // End of authentication steps.
 
