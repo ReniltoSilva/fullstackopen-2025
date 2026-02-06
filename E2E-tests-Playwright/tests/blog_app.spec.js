@@ -56,19 +56,27 @@ describe("Blog app", () => {
       });
 
       test("a new blog can be created", async ({ page }) => {
-        // await page.getByRole("button", { name: "New Blog" }).click();
-        // await page.getByLabel("Title:").fill("New blog created");
-        // await page.getByLabel("Author:").fill("Junior");
-        // await page.getByLabel("Url:").fill("wwww");
-        // await page.getByRole("button", { name: "Create" }).click();
-        // await expect(page.getByText("Title: New blog created")).toBeVisible();
+        await page.getByRole("button", { name: "New Blog" }).click();
+        await page.getByLabel("Title:").fill("New blog created");
+        await page.getByLabel("Author:").fill("Junior");
+        await page.getByLabel("Url:").fill("wwww");
+        await page.getByRole("button", { name: "Create" }).click();
+        await expect(page.getByText("Title: New blog created")).toBeVisible();
       });
 
       test("make sure the blog can be liked", async ({ page }) => {
         await page.getByRole("button", { name: "View" }).click();
         await page.getByRole("button", { name: "like" }).click();
 
-        await expect(page.getByText("Likes: 0")).not.toBeVisible(); //CONTINUE
+        await expect(page.getByText("Likes: 0")).not.toBeVisible();
+      });
+
+      test("make sure to delete a blog", async ({ page }) => {
+        await page.getByRole("button", { name: "View" }).click();
+
+        page.on("dialog", (dialog) => dialog.accept());
+
+        await page.getByRole("button", { name: "Delete" }).click();
       });
     });
   });
