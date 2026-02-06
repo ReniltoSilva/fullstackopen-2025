@@ -193,7 +193,7 @@ function App() {
             currentUser={user}
           />
         ))
-        .sort((a, b) => a.props.blog.likes - b.props.blog.likes)}
+        .sort((a, b) => b.props.blog.likes - a.props.blog.likes)}
     </div>
   );
 }
