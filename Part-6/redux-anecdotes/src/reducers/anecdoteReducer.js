@@ -18,13 +18,9 @@ const asObject = (anecdote) => {
 };
 
 const initialState = anecdotesAtStart.map(asObject);
-
-let arrCountVotes = [...initialState];
+// let arrCountVotes = [...initialState];
 
 const anecdoteReducer = (state = initialState, action) => {
-  // console.log("action: ", action);
-  // console.log(initialState, "initialState from reducer");
-
   switch (action.type) {
     case "INCREASE_COUNT":
       // state.forEach((item, i) => {
@@ -33,12 +29,30 @@ const anecdoteReducer = (state = initialState, action) => {
       //   }
       // });
       // return arrCountVotes.map((item) => item);
-
       const id = action.payload.id;
-      return state.map((a) => (a.id === id ? { ...a, votes: a.votes + 1 } : a));
+      return state
+        .map((a) => (a.id === id ? { ...a, votes: a.votes + 1 } : a))
+        .sort(
+          (a, b) => b.votes - a.votes,
+        ); /* Where is this array being saved? */
+    case "ADD_ANECDOTE":
+      return state.concat(asObject(action.payload.content));
+
     default:
       return state;
   }
+};
+
+/* This function was in the App.jsx component 
+along with vote(inside AnecdoteList.jsx now) function */
+export const createList = (id) => {
+  return { type: "INCREASE_COUNT", payload: { id } };
+};
+
+/* This function was in the App.jsx component 
+along with addAnecdote(inside AnecdoteForm.jsx now) function */
+export const createAnecdote = (content) => {
+  return { type: "ADD_ANECDOTE", payload: { content } };
 };
 
 export default anecdoteReducer;
