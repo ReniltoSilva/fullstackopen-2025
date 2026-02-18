@@ -1,12 +1,13 @@
 import { useSelector, useDispatch } from "react-redux";
 import AnecdoteForm from "./components/AnecdoteForm";
 import AnecdoteList from "./components/AnecdoteList";
+import Filter from "./components/Filter";
 
 const App = () => {
   /*These are now moved away, they are being used
   inside component when they are required */
-  const anecdotes = useSelector((state) => state); /*useSelector to read data*/
-  const dispatch = useDispatch(); /* useDispatch to send actions */
+  // const anecdotes = useSelector((state) => state); /*useSelector to read data*/
+  // const dispatch = useDispatch(); /* useDispatch to send actions */
 
   // const vote = (id) => {
   //   dispatch({ type: "INCREASE_COUNT", payload: { id } });
@@ -53,6 +54,8 @@ const App = () => {
       </form> 
       */}
 
+      <Filter />
+      <br />
       <AnecdoteList />
       <AnecdoteForm />
     </div>

@@ -1,5 +1,3 @@
-import { useDispatch } from "react-redux";
-
 const Notification = () => {
   const style = {
     border: "solid",
