@@ -1,3 +1,6 @@
+import { createSlice } from "@reduxjs/toolkit";
+import { current } from "@reduxjs/toolkit";
+
 const initialState = [
   {
     content: "reducer defines how redux store works",
@@ -11,47 +14,78 @@ const initialState = [
   },
 ];
 
-const noteReducer = (state = initialState, action) => {
-  console.log("ACTION: ", action);
-  switch (action.type) {
-    case "NEW_NOTE":
-      return [...state, action.payload];
-    case "TOGGLE_IMPORTANCE": {
-      const id = action.payload.id;
+const generateId = () => Number((Math.random() * 1000000).toFixed(0));
+
+// const noteReducer = (state = initialState, action) => {
+//   console.log("ACTION: ", action);
+//   switch (action.type) {
+//     case "NEW_NOTE":
+//       return [...state, action.payload];
+//     case "TOGGLE_IMPORTANCE": {
+//       const id = action.payload.id;
+//       const noteToChange = state.find((n) => n.id === id);
+//       const changedNote = {
+//         ...noteToChange,
+//         important: !noteToChange.important,
+//       };
+//       return state.map((note) => (note.id !== id ? note : changedNote));
+//     }
+//     default:
+//       return state;
+//   }
+// };
+
+// export const createNote = (content) => {
+//   /* This is an action creator,
+//   they go inside the functions */
+//   return {
+//     type: "NEW_NOTE",
+//     payload: {
+//       content,
+//       important: false,
+//       id: generateId(),
+//     },
+//   };
+// };
+
+// export const toggleImportanceOf = (id) => {
+//   /* This is an action creator,
+// they go inside the functions */
+//   return {
+//     type: "TOGGLE_IMPORTANCE",
+//     payload: { id },
+//   };
+// };
+
+// export default noteReducer;
+
+const noteSlice = createSlice({
+  name: "notes",
+  initialState,
+  reducers: {
+    createNote(state, action) {
+      const content = action.payload;
+      console.log(state);
+      state.push({
+        content,
+        important: false,
+        id: generateId(),
+      });
+    },
+    toggleImportanceOf(state, action) {
+      const id = action.payload;
       const noteToChange = state.find((n) => n.id === id);
       const changedNote = {
         ...noteToChange,
         important: !noteToChange.important,
       };
+
+      console.log(current(state));
+
       return state.map((note) => (note.id !== id ? note : changedNote));
-    }
-    default:
-      return state;
-  }
-};
-
-const generateId = () => Number((Math.random() * 1000000).toFixed(0));
-
-export const createNote = (content) => {
-  /* This is an action creator, 
-  they go inside the functions */
-  return {
-    type: "NEW_NOTE",
-    payload: {
-      content,
-      important: false,
-      id: generateId(),
     },
-  };
-};
+  },
+});
 
-export const toggleImportanceOf = (id) => {
-  /* This is an action creator, 
-they go inside the functions */
-  return {
-    type: "TOGGLE_IMPORTANCE",
-    payload: { id },
-  };
-};
-
-export default noteReducer;
+export const { createNote, toggleImportanceOf } = noteSlice.actions;
+export default noteSlice.reducer;

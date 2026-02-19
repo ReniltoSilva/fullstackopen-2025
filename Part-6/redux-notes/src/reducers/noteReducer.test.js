@@ -3,15 +3,17 @@ import { describe, expect, test } from "vitest";
 import noteReducer from "./noteReducer";
 
 describe("noteReducer", () => {
-  test("returns new state with action NEW_NOTE", () => {
+  test("returns new state with action notes/createNote", () => {
     const state = [];
     const action = {
-      type: "NEW_NOTE",
-      payload: {
-        content: "the app state is in redux store",
-        important: true,
-        id: 1,
-      },
+      // type: "NEW_NOTE",
+      // payload: {
+      //   content: "the app state is in redux store",
+      //   important: true,
+      //   id: 1,
+      // },
+      type: "notes/createNote",
+      payload: "the app state is in redux store",
     };
 
     deepFreeze(state);
@@ -22,7 +24,7 @@ describe("noteReducer", () => {
   });
 });
 
-test("returns new state with action TOGGLE_IMPORTANCE", () => {
+test("returns new state with action notes/toggleImportanceOf", () => {
   const state = [
     {
       content: "the app state is in redux store",
@@ -37,10 +39,12 @@ test("returns new state with action TOGGLE_IMPORTANCE", () => {
   ];
 
   const action = {
-    type: "TOGGLE_IMPORTANCE",
-    payload: {
-      id: 2,
-    },
+    // type: "TOGGLE_IMPORTANCE",
+    // payload: {
+    //   id: 2,
+    // },
+    type: "notes/toggleImportanceOf",
+    payload: 2,
   };
 
   deepFreeze(state);

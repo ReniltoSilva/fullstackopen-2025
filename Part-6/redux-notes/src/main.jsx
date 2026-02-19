@@ -1,19 +1,35 @@
 import ReactDOM from "react-dom/client";
 import { Provider } from "react-redux";
-import { createStore, combineReducers } from "redux";
+// import { createStore, combineReducers } from "redux";
 
 import App from "./App";
-import filterReducer from "./reducers/filterReducer";
-import noteReducer from "./reducers/noteReducer";
+import store from "./store";
 
-const reducer = combineReducers({
-  notes: noteReducer,
-  filter: filterReducer,
-});
+/* Now this was moved to it's own file  store.js */
+// import { configureStore } from "@reduxjs/toolkit";
+// import filterReducer from "./reducers/filterReducer";
+// import noteReducer from "./reducers/noteReducer";
 
-const store = createStore(reducer);
+/* BY using 'configureStore' 
+we don't need toe combineReducer function
+to create the store's reducer */
+// const reducer = combineReducers({
+//   notes: noteReducer,
+//   filter: filterReducer,
+// });
 
-console.log(store.getState());
+/* This was replaced by 'configureStore' below */
+// const store = createStore(reducer);
+
+/* Now this was moved to it's own file  store.js */
+// const store = configureStore({
+//   reducer: {
+//     notes: noteReducer,
+//     filter: filterReducer,
+//   },
+// });
+
+// console.log(store.getState());
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <Provider store={store}>
