@@ -7,7 +7,6 @@ const Filter = () => {
   const handleChange = (e) => {
     e.preventDefault();
     const content = e.target.value;
-
     dispatch(filterChange(content));
   };
 
