@@ -2,6 +2,7 @@ import { useSelector, useDispatch } from "react-redux";
 import AnecdoteForm from "./components/AnecdoteForm";
 import AnecdoteList from "./components/AnecdoteList";
 import Filter from "./components/Filter";
+import Notification from "./components/Notification";
 
 const App = () => {
   /*These are now moved away, they are being used
@@ -53,7 +54,7 @@ const App = () => {
         <button>create</button>
       </form> 
       */}
-
+      <Notification />
       <Filter />
       <br />
       <AnecdoteList />
