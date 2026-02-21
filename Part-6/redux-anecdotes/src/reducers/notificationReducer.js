@@ -4,11 +4,15 @@ const notificationSlice = createSlice({
   name: "notification",
   initialState: "Render here notification...",
   reducers: {
-    createNotification(state, action) {
+    createDisplayNotification(state, action) {
       return action.payload;
+    },
+    clearNotification() {
+      return "";
     },
   },
 });
 
-export const { createNotification } = notificationSlice.actions;
+export const { createDisplayNotification, clearNotification } =
+  notificationSlice.actions;
 export default notificationSlice.reducer;
