@@ -59,6 +59,7 @@
 
 import { createSlice } from "@reduxjs/toolkit";
 
+/* This was before implementing json-server and mock db.
 const anecdotesAtStart = [
   "If it hurts, do it more often",
   "Adding manpower to a late software project makes it later!",
@@ -70,15 +71,16 @@ const anecdotesAtStart = [
 
 const getId = () => (100000 * Math.random()).toFixed(0);
 
-// const asObject = (anecdote) => {
-//   return {
-//     content: anecdote,
-//     id: getId(),
-//     votes: 0,
-//   };
-// };
+const asObject = (anecdote) => {
+  return {
+    content: anecdote,
+    id: getId(),
+    votes: 0,
+  };
+};
 
-// const initialState = anecdotesAtStart.map(asObject);
+const initialState = anecdotesAtStart.map(asObject);
+*/
 
 const anecdoteSlice = createSlice({
   name: "anecdote",
@@ -86,12 +88,14 @@ const anecdoteSlice = createSlice({
   reducers: {
     createList(state, action) {
       const id = action.payload;
+
       return state
         .map((a) => (a.id === id ? { ...a, votes: a.votes + 1 } : a))
         .sort((a, b) => b.votes - a.votes);
     },
     createAnecdote(state, action) {
-      return state.concat(asObject(action.payload));
+      // return state.concat(asObject(action.payload))/*The code before fetching data from server*/
+      state.push(action.payload);
     },
     setAnecdotes(state, action) {
       return action.payload;
