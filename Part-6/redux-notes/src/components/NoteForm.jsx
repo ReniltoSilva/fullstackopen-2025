@@ -1,16 +1,19 @@
 import { createNote } from "../reducers/noteReducer";
 import { useDispatch } from "react-redux";
 
-const NoteForm = () => {
+import noteService from "../services/notes";
+
+const NoteForm = (props) => {
   const dispatch = useDispatch();
 
-  const addNote = (event) => {
+  const addNote = async (event) => {
     event.preventDefault();
     const content = event.target.note.value;
     event.target.note.value = "";
 
+    const newNote = await noteService.createNew(content);
     /* We simply call the action creator here*/
-    dispatch(createNote(content));
+    dispatch(createNote(newNote));
   };
 
   return (
