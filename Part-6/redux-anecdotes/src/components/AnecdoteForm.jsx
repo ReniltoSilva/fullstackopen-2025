@@ -1,7 +1,7 @@
 import { createAnecdote } from "../reducers/anecdoteReducer";
 import { useDispatch } from "react-redux";
-import { setNotificationWithTimeout } from "../helper_func/setNotificationWithTimeout";
 
+import { setNotification } from "../reducers/notificationReducer";
 import { appendAnecdote } from "../reducers/anecdoteReducer";
 
 const AnecdoteForm = () => {
@@ -19,7 +19,7 @@ const AnecdoteForm = () => {
     // setTimeout(() => {
     //   dispatch(clearNotification());
     // }, 5000);
-    setNotificationWithTimeout(dispatch, `You created: ${content}`);
+    dispatch(setNotification(`You created '${content}'`, 10));
   };
 
   return (

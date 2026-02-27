@@ -118,7 +118,6 @@ export const initializeAnecdotes = () => {
 export const appendAnecdote = (content) => {
   return async (dispatch) => {
     const response = await anecdotesService.createNew(content);
-    console.log(response);
     dispatch(createAnecdote(response));
   };
 };
