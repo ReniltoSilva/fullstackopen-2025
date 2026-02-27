@@ -3,6 +3,7 @@ const baseUrl = "http://localhost:3001/anecdotes";
 const getAll = async () => {
   const response = await fetch(baseUrl);
 
+  // console.log(await response.json());
   if (!response.ok) {
     throw new Error("Failed to fetch anecdotes");
   }
@@ -26,4 +27,20 @@ const createNew = async (content) => {
   return await response.json();
 };
 
-export default { getAll, createNew };
+const updateVote = async (content) => {
+  const options = {
+    method: "PUT",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(content),
+  };
+
+  const response = await fetch(`${baseUrl}/${content.id}`, options);
+
+  if (!response.ok) {
+    throw new Error("Failed to update vote!");
+  }
+
+  return await response.json();
+};
+
+export default { getAll, createNew, updateVote };

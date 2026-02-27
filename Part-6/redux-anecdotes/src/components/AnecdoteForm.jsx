@@ -13,7 +13,6 @@ const AnecdoteForm = () => {
     e.target.anecdote.value = "";
 
     // const response = await anecdotesService.createNew(content);
-
     // dispatch(createAnecdote(response));
     dispatch(appendAnecdote(content));
     // dispatch(createDisplayNotification(`You created: ${content}`));

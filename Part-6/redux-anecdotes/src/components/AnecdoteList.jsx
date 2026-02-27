@@ -2,6 +2,8 @@ import { useSelector, useDispatch } from "react-redux";
 import { createList } from "../reducers/anecdoteReducer";
 import { setNotificationWithTimeout } from "../helper_func/setNotificationWithTimeout";
 
+import { increaseVote } from "../reducers/anecdoteReducer";
+
 const AnecdoteList = () => {
   const anecdotes = useSelector((reduce) => {
     return reduce.anecdote.filter((item) =>
@@ -11,11 +13,14 @@ const AnecdoteList = () => {
   const dispatch = useDispatch();
 
   const vote = (anecdote) => {
+    dispatch(increaseVote(anecdote.id));
     dispatch(createList(anecdote.id));
+
     // dispatch(createDisplayNotification(`You voted for: ${anecdote.content}`));
     // setTimeout(() => {
     //   dispatch(clearNotification());
     // }, 5000);
+
     setNotificationWithTimeout(dispatch, `You voted for: ${anecdote.content}`);
   };
 

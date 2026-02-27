@@ -38,7 +38,6 @@ const App = () => {
 
   useEffect(() => {
     // noteService.getAll().then((notes) => dispatch(setNotes(notes)));
-
     dispatch(initializeNotes());
   }, [dispatch]);
 
