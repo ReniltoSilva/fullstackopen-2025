@@ -58,6 +58,7 @@
 // export default anecdoteReducer;
 
 import { createSlice } from "@reduxjs/toolkit";
+import anecdotesService from "../services/anecdotes";
 
 /* This was before implementing json-server and mock db.
 const anecdotesAtStart = [
@@ -105,4 +106,13 @@ const anecdoteSlice = createSlice({
 
 export const { createList, createAnecdote, setAnecdotes } =
   anecdoteSlice.actions;
+
+export const initializeAnecdotes = () => {
+  return async (dispatch) => {
+    await anecdotesService
+      .getAll()
+      .then((anecdotes) => dispatch(setAnecdotes(anecdotes)));
+  };
+};
+
 export default anecdoteSlice.reducer;

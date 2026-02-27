@@ -1,5 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { current } from "@reduxjs/toolkit";
+import noteService from "../services/notes";
 
 // const initialState = [
 //   {
@@ -14,7 +15,7 @@ import { current } from "@reduxjs/toolkit";
 //   },
 // ];
 
-const generateId = () => Number((Math.random() * 1000000).toFixed(0));
+// const generateId = () => Number((Math.random() * 1000000).toFixed(0));
 
 // const noteReducer = (state = initialState, action) => {
 //   console.log("ACTION: ", action);
@@ -80,7 +81,7 @@ const noteSlice = createSlice({
         important: !noteToChange.important,
       };
 
-      console.log(current(state));
+      // console.log(current(state));
 
       return state.map((note) => (note.id !== id ? note : changedNote));
     },
@@ -91,4 +92,26 @@ const noteSlice = createSlice({
 });
 
 export const { createNote, toggleImportanceOf, setNotes } = noteSlice.actions;
+
+/*Both "initializeNotes" and "appendNote" are 
+actions creatores that we are using to abstract 
+the backendend call away from the function components*/
+export const initializeNotes = () => {
+  /* "initializeNotes" is an action creator. If this action creator
+returns a function, Redux allows us to automatically pass 
+the "dispatch" and "getState" methods from redux's store as arguments
+to the function, ex: "return async (dispatch)" */
+  return async (dispatch) => {
+    const notes = await noteService.getAll();
+    dispatch(setNotes(notes));
+  };
+};
+
+export const appendNote = (content) => {
+  return async (dispatch) => {
+    const newNote = await noteService.createNew(content);
+    dispatch(createNote(newNote));
+  };
+};
+
 export default noteSlice.reducer;

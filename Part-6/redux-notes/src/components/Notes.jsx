@@ -30,8 +30,6 @@ const Notes = () => {
 
   /* Functionality to filter notes */
   const notes = useSelector(({ filter, notes }) => {
-    console.log(notes);
-    console.log(filter);
     if (filter === "ALL") {
       return notes;
     }
