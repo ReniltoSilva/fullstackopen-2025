@@ -18,11 +18,15 @@ export const createAnecdote = async (newAnecdote) => {
   }
   const response = await fetch(baseUrl, options)
 
+  if (!response.ok) {
+    const error = await response.json()
+    throw new Error(error.error)
+  }
+
   return await response.json()
 }
 
 export const voteAnecdote = async (newAnecdote) => {
-  console.log(newAnecdote)
   const options = {
     method: 'PUT',
     headers: { 'Content-Type': 'application/json' },
@@ -30,6 +34,11 @@ export const voteAnecdote = async (newAnecdote) => {
   }
 
   const response = await fetch(`${baseUrl}/${newAnecdote.id}`, options)
+
+  if (!response.ok) {
+    const error = await response.json()
+    throw new Error(error.error)
+  }
 
   return await response.json()
 }
